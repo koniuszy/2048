@@ -22,17 +22,15 @@ const Page = styled.div`
   background-color: #222;
 `
 
-class App extends React.Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <Page>
-          <GlobalStyle />
-          <Game />
-        </Page>
-      </Provider>
-    )
-  }
+const App = () => {
+  return (
+    <Provider store={store}>
+      <Page>
+        <GlobalStyle />
+        <Game />
+      </Page>
+    </Provider>
+  )
 }
 
 export default App
