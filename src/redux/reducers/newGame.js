@@ -10,7 +10,8 @@ const emptyCells = () => {
 }
 
 const initialState = {
-  NewGamePositionOf2Cells: null
+  NewGameFirstNumberPositionAndValue: null,
+  NewGameSecondNumberPositionAndValue: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -30,12 +31,29 @@ const reducer = (state = initialState, action) => {
         newEmptyCells[newEmptyCells.length - 1]
       newEmptyCells.pop()
 
-      let Random2Positions = []
-      Random2Positions.push(FirstRandomPosition)
-      Random2Positions.push(SecondRandomPosition)
+      let SecondRandomValue = null
+      let FirstRandomValue = Math.floor(Math.random() * 2 + 1) * 2
+      if (FirstRandomValue === 4) {
+        SecondRandomValue = 2
+      } else {
+        SecondRandomValue = Math.floor(Math.random() * 2 + 1) * 2
+      }
+
+      SecondRandomValue = SecondRandomValue.toString()
+      FirstRandomValue = FirstRandomValue.toString()
+
+      let FirstNumberPositionAndValue = []
+      FirstNumberPositionAndValue.push(FirstRandomPosition)
+      FirstNumberPositionAndValue.push(FirstRandomValue)
+
+      let SecondNumberPositionAndValue = []
+      SecondNumberPositionAndValue.push(SecondRandomPosition)
+      SecondNumberPositionAndValue.push(SecondRandomValue)
+
       return {
         ...state,
-        NewGamePositionOf2Cells: Random2Positions
+        NewGameFirstNumberPositionAndValue: FirstNumberPositionAndValue,
+        NewGameSecondNumberPositionAndValue: SecondNumberPositionAndValue
       }
     default:
       return state

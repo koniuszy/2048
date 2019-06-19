@@ -1,15 +1,21 @@
 import React from "react"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 
+import { connect } from "react-redux"
+import { newGame } from "../redux/actions"
 import Cells from "./cells"
 import pixToRem from "../utils/pixToRem"
 
+const backgroundColor = css`
+  background-color: #bbada1;
+`
+
 const Container = styled.div`
+  ${backgroundColor};
   width: 500px;
   height: 500px;
   padding: 10px;
   border-radius: 10px;
-  background-color: #bbada1;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -18,9 +24,9 @@ const Container = styled.div`
 `
 
 const BestScore = styled.div`
+  ${backgroundColor};
   width: 200px;
   height: 50px;
-  background-color: #bbada1;
   border-radius: 10px;
   margin: 50px;
 `
@@ -38,10 +44,19 @@ const GameTitle = styled.h1`
 const NewGameWrapper = styled(ScoreWrapper)``
 
 const NewGame = styled.button`
+  background-color: #8f7a68;
+  color: white;
   margin: 50px;
+  padding: 10px;
+  width: 150px;
+  font-size: ${pixToRem(22)};
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  cursor: pointer;
 `
 
-const Game = () => {
+const Game = props => {
   return (
     <>
       <ScoreWrapper>
@@ -52,10 +67,13 @@ const Game = () => {
         <Cells />
       </Container>
       <NewGameWrapper>
-        <NewGame>New Game</NewGame>
+        <NewGame onClick={() => props.newGame()}>New Game</NewGame>
       </NewGameWrapper>
     </>
   )
 }
 
-export default Game
+export default connect(
+  null,
+  { newGame }
+)(Game)
