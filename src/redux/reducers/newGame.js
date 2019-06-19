@@ -1,4 +1,4 @@
-import { NEWGAME } from "../constants"
+import { NEWGAME, GODOWN } from "../constants"
 import { NUMBEROFCELLS } from "../../utils/numberOfCells"
 
 const emptyCells = () => {
@@ -9,12 +9,13 @@ const emptyCells = () => {
   return cells
 }
 
-const initialState = {
-  NewGameFirstNumberPositionAndValue: null,
-  NewGameSecondNumberPositionAndValue: null
+const initialStates = {
+  FirstNumberPositionAndValue: null,
+  SecondNumberPositionAndValue: null,
+  EmptyCells: null
 }
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = initialStates, action) => {
   switch (action.type) {
     case NEWGAME:
       let newEmptyCells = emptyCells()
@@ -50,10 +51,23 @@ const reducer = (state = initialState, action) => {
       SecondNumberPositionAndValue.push(SecondRandomPosition)
       SecondNumberPositionAndValue.push(SecondRandomValue)
 
+      const NewGameNumbers = []
+      NewGameNumbers.push(FirstNumberPositionAndValue)
+      NewGameNumbers.push(SecondNumberPositionAndValue)
+      console.log(NewGameNumbers)
+
       return {
         ...state,
-        NewGameFirstNumberPositionAndValue: FirstNumberPositionAndValue,
-        NewGameSecondNumberPositionAndValue: SecondNumberPositionAndValue
+        Numbers: NewGameNumbers,
+        EmptyCells: newEmptyCells
+      }
+    case GODOWN:
+      console.log(
+        `There are ${NUMBEROFCELLS - state.EmptyCells.length} numbers`
+      )
+      console.log()
+      return {
+        ...state
       }
     default:
       return state

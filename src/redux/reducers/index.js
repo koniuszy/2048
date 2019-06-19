@@ -1,5 +1,8 @@
-// import { combineReducers } from 'redux'
+import { combineReducers } from "redux"
 import newGame from "./newGame"
 
-// export default combineReducers({ counter, otherReducer })
-export default newGame
+const rootReducer = combineReducers({
+  newGame
+})
+
+export default rootReducer

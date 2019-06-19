@@ -36,24 +36,24 @@ class Numbers extends React.Component {
   }
 
   newGame = prevState => {
-    const {
-      value,
-      NewGameFirstNumberPositionAndValue,
-      NewGameSecondNumberPositionAndValue
-    } = this.props
+    // this.props.numbers => array[i][0] position (0-15) array[i][1] value (initial 2 or 4)
+    const { value, numbers } = this.props
     const none = "none"
     const flex = "flex"
     let positions = []
-    positions.push(NewGameFirstNumberPositionAndValue[0])
-    positions.push(NewGameSecondNumberPositionAndValue[0])
+    for (let i = 0; i < numbers.length; i++) {
+      positions.push(numbers[i][0])
+    }
 
     if (prevState.display === none && positions.includes(value)) {
       let numberValue
-      if (NewGameFirstNumberPositionAndValue[0] === value) {
-        numberValue = NewGameFirstNumberPositionAndValue[1]
-      } else {
-        numberValue = NewGameSecondNumberPositionAndValue[1]
+
+      for (let i = 0; i < numbers.length; i++) {
+        if (numbers[i][0] === value) {
+          numberValue = numbers[i][1]
+        }
       }
+
       this.setState({
         display: flex,
         value: numberValue
@@ -74,12 +74,10 @@ class Numbers extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  NewGameFirstNumberPositionAndValue: state.NewGameFirstNumberPositionAndValue,
-  NewGameSecondNumberPositionAndValue: state.NewGameSecondNumberPositionAndValue
-})
+const mapStateToProps = state => {
+  return {
+    numbers: state.newGame.Numbers
+  }
+}
 
-export default connect(
-  mapStateToProps,
-  null
-)(Numbers)
+export default connect(mapStateToProps)(Numbers)
