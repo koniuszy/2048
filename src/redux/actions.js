@@ -1,7 +1,7 @@
-import { GORIGHT } from "./constants"
+import { NEWGAME } from "./constants"
 
-export const goRight = content => {
+export const newGame = () => {
   return {
-    type: GORIGHT
+    type: NEWGAME
   }
 }

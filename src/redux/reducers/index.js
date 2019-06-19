@@ -1,5 +1,5 @@
 // import { combineReducers } from 'redux'
-import cells from "./cells"
+import newGame from "./newGame"
 
 // export default combineReducers({ counter, otherReducer })
-export default cells
+export default newGame

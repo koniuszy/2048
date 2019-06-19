@@ -2,8 +2,8 @@ import React from "react"
 import styled from "styled-components"
 
 import { GlobalCell } from "./styledComponents"
-import { connect } from "react-redux"
 import pixToRem from "../utils/pixToRem"
+import { connect } from "react-redux"
 
 const Cell = styled(GlobalCell)`
   position: absolute;
@@ -19,12 +19,34 @@ const Cell = styled(GlobalCell)`
 `
 
 class Numbers extends React.Component {
+  state = {
+    display: "none",
+    eki: "eki"
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { value, newGamePositionOf2Cells } = this.props
+    if (
+      prevState.display === "none" &&
+      newGamePositionOf2Cells.includes(value)
+    ) {
+      console.log(2)
+      this.setState({
+        display: "block"
+      })
+    }
+  }
+
   render() {
-    const { value } = this.props
-    return <Cell display="none">{value}</Cell>
+    return <Cell display={this.state.display} />
   }
 }
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+  newGamePositionOf2Cells: state.NewGamePositionOf2Cells
+})
 
-export default connect(mapStateToProps)(Numbers)
+export default connect(
+  mapStateToProps,
+  null
+)(Numbers)
