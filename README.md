@@ -31,3 +31,7 @@ https://redux.js.org/
 https://redux.js.org/basics/usage-with-react
 
 + redux-devtools-extension 
+
+
+to instal: 
+https://www.npmjs.com/package/redux-persist

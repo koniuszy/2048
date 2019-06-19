@@ -13,6 +13,7 @@ const Container = styled.div`
   flex-wrap: wrap;
   justify-content: space-around;
   align-content: space-around;
+  position: relative;
 `
 
 const Game = () => {
