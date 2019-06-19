@@ -68,7 +68,7 @@ const Game = props => {
         <Cells />
       </Container>
       <NewGameWrapper>
-        <NewGame onClick={() => props.newGame()}>New Game</NewGame>
+        <NewGame onClick={() => props.newGame(2)}>New Game</NewGame>
       </NewGameWrapper>
     </>
   )

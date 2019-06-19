@@ -1,8 +1,11 @@
 import { NEWGAME, GODOWN } from "./constants"
 
-export const newGame = () => {
+export const newGame = amount => {
   return {
-    type: NEWGAME
+    type: NEWGAME,
+    payload: {
+      amount
+    }
   }
 }
 

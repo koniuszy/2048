@@ -19,43 +19,22 @@ const reducer = (state = initialStates, action) => {
   switch (action.type) {
     case NEWGAME:
       let newEmptyCells = emptyCells()
-
-      const FirstRandomPosition =
-        newEmptyCells[Math.floor(Math.random() * newEmptyCells.length)]
-      newEmptyCells[FirstRandomPosition] =
-        newEmptyCells[newEmptyCells.length - 1]
-      newEmptyCells.pop()
-
-      const SecondRandomPosition =
-        newEmptyCells[Math.floor(Math.random() * newEmptyCells.length)]
-      newEmptyCells[SecondRandomPosition] =
-        newEmptyCells[newEmptyCells.length - 1]
-      newEmptyCells.pop()
-
-      let SecondRandomValue = null
-      let FirstRandomValue = Math.floor(Math.random() * 2 + 1) * 2
-      if (FirstRandomValue === 4) {
-        SecondRandomValue = 2
-      } else {
-        SecondRandomValue = Math.floor(Math.random() * 2 + 1) * 2
+      let NewGameNumbers = []
+      for (let i = 0; i < action.payload.amount; i++) {
+        let PositionAndValue = []
+        const randomPosition =
+          newEmptyCells[Math.floor(Math.random() * newEmptyCells.length)]
+        const randomValue = Math.floor(Math.random() * 2 + 1) * 2
+        newEmptyCells[randomPosition] = newEmptyCells[newEmptyCells.length - 1]
+        newEmptyCells.pop()
+        PositionAndValue.push(randomPosition)
+        if (i !== 0 && NewGameNumbers[0][1] === "4") {
+          PositionAndValue.push("2")
+        } else {
+          PositionAndValue.push(randomValue.toString())
+        }
+        NewGameNumbers.push(PositionAndValue)
       }
-
-      SecondRandomValue = SecondRandomValue.toString()
-      FirstRandomValue = FirstRandomValue.toString()
-
-      let FirstNumberPositionAndValue = []
-      FirstNumberPositionAndValue.push(FirstRandomPosition)
-      FirstNumberPositionAndValue.push(FirstRandomValue)
-
-      let SecondNumberPositionAndValue = []
-      SecondNumberPositionAndValue.push(SecondRandomPosition)
-      SecondNumberPositionAndValue.push(SecondRandomValue)
-
-      const NewGameNumbers = []
-      NewGameNumbers.push(FirstNumberPositionAndValue)
-      NewGameNumbers.push(SecondNumberPositionAndValue)
-      console.log(NewGameNumbers)
-
       return {
         ...state,
         Numbers: NewGameNumbers,

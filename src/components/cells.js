@@ -13,7 +13,7 @@ const CellShadow = styled(GlobalCell)`
 
 class Cells extends Component {
   componentDidMount() {
-    this.props.newGame()
+    this.props.newGame(2)
   }
   makeCellsShadow = () => {
     const backgroundForCells = []
