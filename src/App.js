@@ -24,7 +24,9 @@ const Page = styled.div`
 
 class App extends React.Component {
   componentDidMount() {
-    window.addEventListener("keyboard", this.checkKeyPress)
+    // type and function
+    // https://developer.mozilla.org/en-US/docs/Web/Events ctrl + f => 	KeyboardEvent
+    window.addEventListener("keydown", this.checkKeyPress)
   }
 
   checkKeyPress = e => {

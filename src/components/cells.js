@@ -20,7 +20,7 @@ class Cells extends Component {
     for (let i = 0; i < NUMBEROFCELLS; i++) {
       backgroundForCells.push(
         <CellShadow key={i}>
-          <Numbers value={i} />
+          <Numbers position={i} />
         </CellShadow>
       )
     }

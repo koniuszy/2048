@@ -31,38 +31,37 @@ class Numbers extends React.Component {
     value: null
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    this.newGame(prevState)
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.numbers !== null &&
+      prevProps.numbers !== this.props.numbers
+    ) {
+      this.fillCells()
+    }
   }
 
-  newGame = prevState => {
+  fillCells = () => {
     // this.props.numbers => array[i][0] position (0-15) array[i][1] value (initial 2 or 4)
-    const { value, numbers } = this.props
+    const { position, numbers } = this.props
+    const { display } = this.state
     const none = "none"
     const flex = "flex"
-    let positions = []
-    for (let i = 0; i < numbers.length; i++) {
-      positions.push(numbers[i][0])
-    }
+    let numbersExist = false
 
-    if (prevState.display === none && positions.includes(value)) {
-      let numberValue
-
-      for (let i = 0; i < numbers.length; i++) {
-        if (numbers[i][0] === value) {
-          numberValue = numbers[i][1]
-        }
+    numbers.map(number => {
+      if (number[0] === position) {
+        numbersExist = true
+        this.setState({
+          display: flex,
+          value: number[1]
+        })
+      } else if (display === flex && !numbersExist) {
+        this.setState({
+          display: none,
+          value: null
+        })
       }
-
-      this.setState({
-        display: flex,
-        value: numberValue
-      })
-    } else if (prevState.display === flex && !positions.includes(value)) {
-      this.setState({
-        display: none
-      })
-    }
+    })
   }
 
   render() {
