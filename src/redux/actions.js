@@ -1,4 +1,4 @@
-import { NEWGAME, GODOWN } from "./constants"
+import { NEWGAME } from "./constants"
 
 export const newGame = amount => {
   return {
@@ -9,8 +9,8 @@ export const newGame = amount => {
   }
 }
 
-export const goDown = () => {
+export const move = type => {
   return {
-    type: GODOWN
+    type: type
   }
 }

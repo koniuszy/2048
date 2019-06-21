@@ -3,7 +3,8 @@ import styled, { createGlobalStyle } from "styled-components"
 
 import Game from "./components/gameContainer"
 import { connect } from "react-redux"
-import { goDown } from "./redux/actions"
+import { move } from "./redux/actions"
+import { GODOWN, GOUP, GORIGHT, GOLEFT } from "./redux/constants"
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -35,13 +36,13 @@ class App extends React.Component {
     const left = "ArrowLeft"
     const right = "ArrowRight"
     if (e.key === down) {
-      this.props.goDown()
+      this.props.move(GODOWN)
     } else if (e.key === up) {
-      console.log("aaa")
+      this.props.move(GOUP)
     } else if (e.key === left) {
-      console.log("aaa")
+      this.props.move(GOLEFT)
     } else if (e.key === right) {
-      console.log("aaa")
+      this.props.move(GORIGHT)
     }
   }
 
@@ -57,5 +58,5 @@ class App extends React.Component {
 
 export default connect(
   null,
-  { goDown }
+  { move }
 )(App)
