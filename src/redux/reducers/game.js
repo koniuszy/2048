@@ -8,8 +8,7 @@ import {
 } from "./functions/game"
 
 const initialStates = {
-  Numbers: [],
-  Direction: null
+  Numbers: []
 }
 
 const reducer = (state = initialStates, action) => {
@@ -32,6 +31,7 @@ const reducer = (state = initialStates, action) => {
         } else {
           PositionAndValue.push(randomValue)
         }
+        PositionAndValue.push(NEWGAME)
         newNumbers.push(PositionAndValue)
         emptyCells = getEmptyCells(newNumbers[0])
       }
