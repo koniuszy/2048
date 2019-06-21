@@ -32,17 +32,18 @@ class App extends React.Component {
 
   checkKeyPress = e => {
     e.preventDefault() // scrolling
+    const key = e.key
     const down = "ArrowDown"
     const up = "ArrowUp"
     const left = "ArrowLeft"
     const right = "ArrowRight"
-    if (e.key === down) {
+    if (key === down) {
       this.props.move(GODOWN)
-    } else if (e.key === up) {
+    } else if (key === up) {
       this.props.move(GOUP)
-    } else if (e.key === left) {
+    } else if (key === left) {
       this.props.move(GOLEFT)
-    } else if (e.key === right) {
+    } else if (key === right) {
       this.props.move(GORIGHT)
     }
   }

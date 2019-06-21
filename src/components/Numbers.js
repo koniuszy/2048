@@ -147,7 +147,7 @@ class Numbers extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    numbers: state.newGame.Numbers
+    numbers: state.game.Numbers
   }
 }
 

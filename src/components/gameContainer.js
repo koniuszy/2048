@@ -40,6 +40,8 @@ const ScoreWrapper = styled.div`
 const GameTitle = styled.h1`
   font-size: ${pixToRem(64)};
   opacity: 0.5;
+  color: white;
+  letter-spacing: 15px;
 `
 
 const NewGameWrapper = styled(ScoreWrapper)``
