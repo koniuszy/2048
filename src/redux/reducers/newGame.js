@@ -186,7 +186,6 @@ const reducer = (state = initialStates, action) => {
         return b[0] - a[0]
       })
       const firstRowRight = position => {
-        console.log(position)
         return !((position + 1) % 4 === 0)
       }
       PositionOfNextCell = 1

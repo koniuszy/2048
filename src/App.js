@@ -31,6 +31,7 @@ class App extends React.Component {
   }
 
   checkKeyPress = e => {
+    e.preventDefault() // scrolling
     const down = "ArrowDown"
     const up = "ArrowUp"
     const left = "ArrowLeft"
