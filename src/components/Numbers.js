@@ -48,6 +48,7 @@ class Numbers extends React.Component {
     const flex = "flex"
     let numbersExist = false
 
+    // eslint-disable-next-line
     numbers.map(number => {
       if (number[0] === position) {
         numbersExist = true
