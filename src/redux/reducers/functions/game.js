@@ -83,7 +83,10 @@ export const move = (Numbers, positionCanMove, PositionOfNextCell) => {
           ) {
             // it cannot be marged twice => [2] [2] [4] [8] (to left) should get [4] [4] [8] []
             for (let k = 0; k < mergedNumbers.length; k++) {
-              if (mergedNumbers[k][1] === value) {
+              if (
+                mergedNumbers[k][1] === value &&
+                mergedNumbers[k][0] === positionOfNextNumber
+              ) {
                 mergedAlready = true
               }
             }

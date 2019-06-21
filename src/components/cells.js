@@ -9,6 +9,10 @@ import { NUMBEROFCELLS } from "../utils/numberOfCells"
 
 const CellShadow = styled(GlobalCell)`
   background: rgba(238, 228, 218, 0.35);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 class Cells extends Component {

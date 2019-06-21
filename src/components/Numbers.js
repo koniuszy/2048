@@ -1,7 +1,7 @@
 import React from "react"
 import styled, { keyframes } from "styled-components"
 
-import { GlobalCell } from "./styledComponents"
+import { GlobalCell, WIDTH, HEIGHT } from "./styledComponents"
 import pixToRem from "../utils/pixToRem"
 import { connect } from "react-redux"
 import { NEWGAME } from "../redux/constants"
@@ -15,7 +15,7 @@ const Cell = styled(GlobalCell)`
   background-color: ${props => props.color};
   display: ${props => props.display};
   box-shadow: ${props => props.shadow};
-  animation: ${props => props.animation} 2s linear infinite;
+  animation: ${props => props.animation} 250ms linear;
 `
 
 const Value = styled.h3`
@@ -29,13 +29,21 @@ const Value = styled.h3`
   color: ${props => props.font};
 `
 
-const create = keyframes`
-from {
-    transform: rotate(0deg);
-  }
+const heightInAnimation = `${HEIGHT + 10}px`
+const widthInAnimation = `${WIDTH + 10}px`
 
-  to {
-    transform: rotate(360deg);
+const create = keyframes`
+  0% {
+    width: 0px;
+    height: 0px;
+  }
+  90% {
+    width: ${widthInAnimation};
+    height: ${heightInAnimation};
+  }
+  100% {
+    width: ${WIDTH + "px"};
+    height: ${HEIGHT + "px"};
   }
 `
 

@@ -7,3 +7,6 @@ export const GlobalCell = styled.div`
   height: 105px;
   border-radius: 5px;
 `
+
+export const WIDTH = 105
+export const HEIGHT = 105
