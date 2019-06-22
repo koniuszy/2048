@@ -1,4 +1,12 @@
-import { NEWGAME, GODOWN, GOUP, GOLEFT, GORIGHT } from "../constants"
+import {
+  NEWGAME,
+  GODOWN,
+  GOUP,
+  GOLEFT,
+  GORIGHT,
+  UNDO,
+  SAVEPREVNUMBERS
+} from "../constants"
 import { NUMBEROFCELLS, ROW } from "../../utils/numberOfCells"
 import {
   getEmptyCells,
@@ -8,7 +16,9 @@ import {
 } from "./functions/game"
 
 const initialStates = {
-  Numbers: []
+  Numbers: [],
+  PrevNumbers: [],
+  AmountOfUnDos: 3
 }
 
 const reducer = (state = initialStates, action) => {
@@ -37,7 +47,10 @@ const reducer = (state = initialStates, action) => {
       }
 
       return {
-        Numbers: newNumbers
+        ...state,
+        PrevNumbers: newNumbers,
+        Numbers: newNumbers,
+        AmountOfUnDos: 3
       }
 
     case GODOWN:
@@ -50,6 +63,7 @@ const reducer = (state = initialStates, action) => {
       PositionOfNextCell = 4
       newNumbers = move(Numbers, firstRowDown, PositionOfNextCell)
       return {
+        ...state,
         Numbers: newNumbers
       }
 
@@ -63,6 +77,7 @@ const reducer = (state = initialStates, action) => {
       PositionOfNextCell = -4
       newNumbers = move(Numbers, firstRowUp, PositionOfNextCell)
       return {
+        ...state,
         Numbers: newNumbers
       }
 
@@ -79,6 +94,7 @@ const reducer = (state = initialStates, action) => {
       PositionOfNextCell = 1
       newNumbers = move(Numbers, firstRowRight, PositionOfNextCell)
       return {
+        ...state,
         Numbers: newNumbers
       }
 
@@ -95,7 +111,25 @@ const reducer = (state = initialStates, action) => {
       PositionOfNextCell = -1
       newNumbers = move(Numbers, firstRowLeft, PositionOfNextCell)
       return {
+        ...state,
         Numbers: newNumbers
+      }
+
+    case UNDO:
+      let amountsOfUnDos = state.AmountOfUnDos - 1
+      let newNumbersAfterUndo = state.Numbers
+      if (amountsOfUnDos >= 0) {
+        newNumbersAfterUndo = state.PrevNumbers
+      }
+      return {
+        ...state,
+        Numbers: newNumbersAfterUndo,
+        AmountOfUnDos: amountsOfUnDos
+      }
+    case SAVEPREVNUMBERS:
+      return {
+        ...state,
+        PrevNumbers: state.Numbers
       }
 
     default:

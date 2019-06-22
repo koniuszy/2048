@@ -2,7 +2,8 @@ import React from "react"
 import styled, { css } from "styled-components"
 
 import { connect } from "react-redux"
-import { newGame } from "../redux/actions"
+import { newGame, move } from "../redux/actions"
+import { UNDO } from "../redux/constants"
 import Cells from "./cells"
 import pixToRem from "../utils/pixToRem"
 
@@ -31,7 +32,7 @@ const BestScore = styled.div`
   margin: 50px;
 `
 
-const ScoreWrapper = styled.div`
+const Wrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
@@ -44,9 +45,7 @@ const GameTitle = styled.h1`
   letter-spacing: 15px;
 `
 
-const NewGameWrapper = styled(ScoreWrapper)``
-
-const NewGame = styled.button`
+const Button = styled.button`
   background-color: #8f7a68;
   color: white;
   margin: 50px;
@@ -57,26 +56,59 @@ const NewGame = styled.button`
   border: none;
   outline: none;
   cursor: pointer;
+
+  ${props => props.styles}
 `
+
+const disableButton = (undo, numbers, prevNumbers) => {
+  if (undo > 0 && numbers !== prevNumbers) {
+    return false
+  } else {
+    return true
+  }
+}
+
+const getButtonStyles = (undo, numbers, prevNumbers) => {
+  if (undo > 0 && numbers !== prevNumbers) {
+    return ""
+  } else {
+    return `opacity: 0.5; cursor: default;`
+  }
+}
 
 const Game = props => {
   return (
     <>
-      <ScoreWrapper>
+      <Wrapper>
         <GameTitle>2048</GameTitle>
         <BestScore />
-      </ScoreWrapper>
+      </Wrapper>
       <Container>
         <Cells />
       </Container>
-      <NewGameWrapper>
-        <NewGame onClick={() => props.newGame(2)}>New Game</NewGame>
-      </NewGameWrapper>
+      <Wrapper>
+        <Button
+          styles={getButtonStyles(props.undo, props.numbers, props.prevNumbers)}
+          disabled={disableButton(props.undo, props.numbers, props.prevNumbers)}
+          onClick={() => props.move(UNDO)}
+        >
+          Undo: {props.undo}
+        </Button>
+        <Button onClick={() => props.newGame(2)}>New Game</Button>
+      </Wrapper>
     </>
   )
 }
 
+const mapStateToProps = state => {
+  return {
+    undo: state.game.AmountOfUnDos,
+    numbers: state.game.Numbers,
+    prevNumbers: state.game.PrevNumbers
+  }
+}
+
 export default connect(
-  null,
-  { newGame }
+  mapStateToProps,
+  { newGame, move }
 )(Game)
