@@ -26,8 +26,8 @@ const reducer = (state = initialStates, action) => {
         let PositionAndValue = []
         randomPosition = getRandomNumberOfArray(emptyCells)
         PositionAndValue.push(emptyCells[randomPosition])
-        if (i !== 0 && newNumbers[0][1] === "4") {
-          PositionAndValue.push("2")
+        if (i !== 0 && newNumbers[0][1] === 4) {
+          PositionAndValue.push(2)
         } else {
           PositionAndValue.push(randomValue)
         }

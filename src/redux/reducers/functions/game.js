@@ -38,7 +38,7 @@ export const getEmptyCells = fullPositions => {
 
 // 2 or 4 value
 export const getRandomValue = () => {
-  return (Math.floor(Math.random() * 2 + 1) * 2).toString()
+  return Math.floor(Math.random() * 2 + 1) * 2
 }
 
 export const getRandomNumberOfArray = emptyCells => {
@@ -88,8 +88,7 @@ export const move = (Numbers, positionCanMove, PositionOfNextCell) => {
             }
             if (!mergedAlready) {
               shouldMerge = true
-              value = parseInt(newNumbers[i][1], 10) * 2
-              value = value.toString()
+              value = newNumbers[i][1] * 2
               newNumbers[i][1] = value
               positionsOfMergedNumbers.push(newNumbers[i][0])
               i = newNumbers.length + 1

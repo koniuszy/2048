@@ -14,11 +14,9 @@ const Cell = styled(GlobalCell)`
   top: 0;
   left: 0;
 
-  background-color: ${props => props.color};
   display: ${props => props.display};
-  box-shadow: ${props => props.shadow};
   animation: ${props => props.animation} 250ms linear;
-  ${props => props.move};
+  ${props => props.cellStyles};
 `
 
 const Value = styled.h3`
@@ -28,8 +26,7 @@ const Value = styled.h3`
   text-align: center;
   user-select: none;
 
-  font-size: ${props => props.size};
-  color: ${props => props.font};
+  ${props => props.textStyles};
 `
 
 const heightInAnimation = `${HEIGHT + 10}px`
@@ -52,14 +49,24 @@ const create = keyframes`
 
 class Numbers extends React.Component {
   state = {
-    display: "none",
     value: null,
-    color: "#eee4db",
-    shadow: "none",
-    font: "font",
-    size: pixToRem(48),
     animation: "none",
-    move: ""
+    textStyles: "",
+    cellStyles: ""
+  }
+
+  shouldComponentUpdate(nextProps) {
+    let shouldUpdate = true
+    nextProps.numbers.map(number => {
+      if (
+        number[0] === this.props.position &&
+        number[1] === this.state.value &&
+        number[2] !== NEWGAME
+      ) {
+        shouldUpdate = false
+      }
+    })
+    return shouldUpdate
   }
 
   componentDidUpdate(prevProps) {
@@ -82,113 +89,103 @@ class Numbers extends React.Component {
   fillCells = () => {
     // this.props.numbers => array[i][0] position (0-15) array[i][1] value (initial 2 or 4) array[i][2] type of animation
     const { position, numbers } = this.props
-    const { display } = this.state
     const none = "none"
     const flex = "flex"
-    let numbersExist = false
+    let numberExist = false
     let animation = none
+    let cellStyles
+    let textStyles
     let move
 
-    // eslint-disable-next-line
     numbers.map(number => {
       if (number[0] === position) {
-        numbersExist = true
-        let color = "#eee4db"
-        let font = "black"
-        let shadow = "none"
-        let size = pixToRem(48)
-        if (parseInt(number[1], 10) >= 8) {
-          font = "white"
-        }
-        if (number[2] === NEWGAME) {
-          animation = create
-        } else if (!number[2]) {
-          // console.log(number[2])
-          move = `position: absolute; ${number[2]}`
-        }
-
-        switch (number[1]) {
-          case "4":
-            color = "#fde0c9"
-            break
-          case "8":
-            color = "#f2b179"
-            break
-          case "16":
-            color = "#f59563"
-            break
-          case "32":
-            color = "#f67c4f"
-            break
-          case "64":
-            color = "#f65e3b"
-            break
-          case "128":
-            color = "#fdcf72"
-            break
-          case "256":
-            color = "#fdcc60"
-            break
-          case "512":
-            color = "#fdc850"
-            shadow =
-              "0 0 30px 10px rgba(243, 215, 116, 0.39683), inset 0 0 0 1px rgba(255, 255, 255, 0.2381)"
-            break
-          case "1024":
-            color = "#fdc53f"
-            size = pixToRem(35)
-            shadow =
-              "0 0 30px 10px rgba(243, 215, 116, 0.47619), inset 0 0 0 1px rgba(255, 255, 255, 0.28571)"
-            break
-          case "2048":
-            color = "#fdc22e"
-            size = pixToRem(35)
-            shadow =
-              "0 0 30px 10px rgba(243, 215, 116, 0.47619), inset 0 0 0 1px rgba(255, 255, 255, 0.32571)"
-            break
-          case parseInt(number[1] > 2048):
-            size = pixToRem(35)
-            color = "#fcd00f"
-            shadow = shadow =
-              "0 0 30px 10px rgba(243, 215, 116, 0.47619), inset 0 0 0 1px rgba(255, 255, 255, 0.4571)"
-            break
-          default:
-            break
-        }
-        this.setState(
-          {
-            animation: animation,
-            display: flex,
-            value: number[1],
-            color: color,
-            shadow: shadow,
-            font: font,
-            size: size,
-            move: move
-          },
-          this.closeAnimation
-        )
-      } else if (display === flex && !numbersExist) {
-        //first animation then display none
-        this.setState({
-          display: none
-        })
+        numberExist = number
       }
     })
+
+    // eslint-disable-next-line
+    if (numberExist) {
+      let fontColor = "black"
+      let shadow = "none"
+      let size = pixToRem(48)
+      let color
+      if (numberExist[2] === NEWGAME) {
+        animation = create
+      } else if (!numberExist[2]) {
+        // console.log(number[2])
+        move = `position: absolute; ${numberExist[2]}`
+      }
+
+      let colorNumber = 0
+      let shadowNumber = 0
+      let numberValue = numberExist[1]
+
+      while (numberValue > 2) {
+        numberValue = numberValue / 2
+        if (colorNumber <= 11) {
+          colorNumber++
+        } else {
+          numberValue = 1
+        }
+        if (colorNumber >= 8) {
+          shadowNumber++
+        }
+      }
+      const colors = [
+        "#eee4db",
+        "#fde0c9",
+        "#f2b179",
+        "#f59563",
+        "#f67c4f",
+        "#f65e3b",
+        "#fdcf72",
+        "#fdcc60",
+        "#fdc850",
+        "#fdc53f",
+        "#fdc22e",
+        "#fcd00f"
+      ]
+      const shadows = [
+        "",
+        "0 0 30px 10px rgba(243, 215, 116, 0.39683), inset 0 0 0 1px rgba(255, 255, 255, 0.2381)",
+        "0 0 30px 10px rgba(243, 215, 116, 0.47619), inset 0 0 0 1px rgba(255, 255, 255, 0.28571)",
+        "0 0 30px 10px rgba(243, 215, 116, 0.47619), inset 0 0 0 1px rgba(255, 255, 255, 0.32571)",
+        "0 0 30px 10px rgba(243, 215, 116, 0.47619), inset 0 0 0 1px rgba(255, 255, 255, 0.4571)"
+      ]
+      if (numberExist[1] >= 8) {
+        fontColor = "white"
+      }
+      if (numberExist[1] >= 1024) {
+        size = pixToRem(35)
+      }
+      color = [colors[colorNumber]]
+      shadow = shadows[shadowNumber]
+      cellStyles = `background-color: ${color}; box-shadow: ${shadow}; display: ${flex};`
+      textStyles = `color: ${fontColor}; font-size: ${size};`
+
+      this.setState(
+        {
+          value: numberExist[1],
+          animation: animation,
+          textStyles: textStyles,
+          cellStyles: cellStyles
+        },
+        this.closeAnimation
+      )
+    } else {
+      //first animation then display none
+      cellStyles = `display: ${none};`
+      this.setState({
+        cellStyles: cellStyles,
+        value: null
+      })
+    }
   }
 
   render() {
     return (
-      <Cell
-        shadow={this.state.shadow}
-        color={this.state.color}
-        display={this.state.display}
-        animation={this.state.animation}
-        move={this.state.move}
-      >
-        <Value size={this.state.size} font={this.state.font}>
-          {this.state.value}
-        </Value>
+      <Cell cellStyles={this.state.cellStyles} animation={this.state.animation}>
+        <Value textStyles={this.state.textStyles}>{this.state.value}</Value>
       </Cell>
     )
   }
