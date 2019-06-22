@@ -1,10 +1,10 @@
 import { NUMBEROFCELLS, ROW } from "../../../utils/numberOfCells"
-import { MEGRE, NEWGAME, GORIGTH, GOLEFT, GOUP } from "../../constants"
+import { MERGE, NEWGAME, GORIGTH, GOLEFT, GOUP } from "../../constants"
 
 const arraysAreEqual = (arrayX, arrayY) => {
   if (arrayX.length === arrayY.length) {
     for (let i = 0; i < arrayX.length; i++) {
-      for (let c = 0; c < arrayX[i].length - 1; c++) {
+      for (let c = 0; c < 2; c++) {
         if (arrayX[i][c] !== arrayY[i][c]) {
           return false
         }
@@ -52,11 +52,12 @@ export const move = (Numbers, positionCanMove, PositionOfNextCell) => {
   let emptyCells = []
   let newNumber = []
   let newNumbers = []
-  let mergedNumbers = []
+  let positionsOfMergedNumbers = []
 
   let position
   let value
 
+  // merge or move number
   for (let i = 0; i < Numbers.length; i++) {
     position = Numbers[i][0]
     value = Numbers[i][1]
@@ -82,25 +83,20 @@ export const move = (Numbers, positionCanMove, PositionOfNextCell) => {
             newNumbers[i][1] === value
           ) {
             // it cannot be marged twice => [2] [2] [4] [8] (to left) should get [4] [4] [8] []
-            for (let k = 0; k < mergedNumbers.length; k++) {
-              if (
-                mergedNumbers[k][1] === value &&
-                mergedNumbers[k][0] === positionOfNextNumber
-              ) {
-                mergedAlready = true
-              }
+            if (positionsOfMergedNumbers.includes(positionOfNextNumber)) {
+              mergedAlready = true
             }
-
             if (!mergedAlready) {
               shouldMerge = true
               value = parseInt(newNumbers[i][1], 10) * 2
               value = value.toString()
               newNumbers[i][1] = value
-              mergedNumbers.push(newNumbers[i])
+              positionsOfMergedNumbers.push(newNumbers[i][0])
               i = newNumbers.length + 1
             }
           }
         }
+        //move
         if (!shouldMerge) {
           position = positionOfNextNumber - PositionOfNextCell
         }
@@ -109,7 +105,7 @@ export const move = (Numbers, positionCanMove, PositionOfNextCell) => {
           position = position + PositionOfNextCell
         }
       }
-    }
+    } // number remain the same
     if (!shouldMerge) {
       newNumber.push(position)
       newNumber.push(value)
@@ -118,6 +114,8 @@ export const move = (Numbers, positionCanMove, PositionOfNextCell) => {
     shouldMerge = false
     fullCells = getFullCells(newNumbers)
   }
+
+  // create new Number
   if (!arraysAreEqual(newNumbers, Numbers)) {
     emptyCells = getEmptyCells(fullCells)
     position = emptyCells[getRandomNumberOfArray(emptyCells)]

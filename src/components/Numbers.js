@@ -1,21 +1,24 @@
 import React from "react"
 import styled, { keyframes } from "styled-components"
 
-import { GlobalCell, WIDTH, HEIGHT } from "./styledComponents"
+import { GlobalCell, WIDTH, HEIGHT, ANIMATIONTIME } from "./styledComponents"
 import pixToRem from "../utils/pixToRem"
 import { connect } from "react-redux"
 import { NEWGAME } from "../redux/constants"
 
 const Cell = styled(GlobalCell)`
-  position: absolute;
   justify-content: center;
   align-items: center;
   align-content: center;
+  transition: top 5s linear, left 250ms linear;
+  top: 0;
+  left: 0;
 
   background-color: ${props => props.color};
   display: ${props => props.display};
   box-shadow: ${props => props.shadow};
   animation: ${props => props.animation} 250ms linear;
+  ${props => props.move};
 `
 
 const Value = styled.h3`
@@ -55,7 +58,8 @@ class Numbers extends React.Component {
     shadow: "none",
     font: "font",
     size: pixToRem(48),
-    animation: "none"
+    animation: "none",
+    move: ""
   }
 
   componentDidUpdate(prevProps) {
@@ -67,14 +71,23 @@ class Numbers extends React.Component {
     }
   }
 
+  closeAnimation = () => {
+    setTimeout(() => {
+      this.setState({
+        animation: "none"
+      })
+    }, ANIMATIONTIME)
+  }
+
   fillCells = () => {
     // this.props.numbers => array[i][0] position (0-15) array[i][1] value (initial 2 or 4) array[i][2] type of animation
-    const { position, numbers, animations } = this.props
+    const { position, numbers } = this.props
     const { display } = this.state
     const none = "none"
     const flex = "flex"
     let numbersExist = false
     let animation = none
+    let move
 
     // eslint-disable-next-line
     numbers.map(number => {
@@ -89,7 +102,11 @@ class Numbers extends React.Component {
         }
         if (number[2] === NEWGAME) {
           animation = create
+        } else if (!number[2]) {
+          // console.log(number[2])
+          move = `position: absolute; ${number[2]}`
         }
+
         switch (number[1]) {
           case "4":
             color = "#fde0c9"
@@ -138,20 +155,23 @@ class Numbers extends React.Component {
           default:
             break
         }
-        this.setState({
-          animation: animation,
-          display: flex,
-          value: number[1],
-          color: color,
-          shadow: shadow,
-          font: font,
-          size: size
-        })
+        this.setState(
+          {
+            animation: animation,
+            display: flex,
+            value: number[1],
+            color: color,
+            shadow: shadow,
+            font: font,
+            size: size,
+            move: move
+          },
+          this.closeAnimation
+        )
       } else if (display === flex && !numbersExist) {
-        //first move then display none
+        //first animation then display none
         this.setState({
-          display: none,
-          value: null
+          display: none
         })
       }
     })
@@ -164,6 +184,7 @@ class Numbers extends React.Component {
         color={this.state.color}
         display={this.state.display}
         animation={this.state.animation}
+        move={this.state.move}
       >
         <Value size={this.state.size} font={this.state.font}>
           {this.state.value}

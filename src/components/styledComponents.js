@@ -10,3 +10,4 @@ export const GlobalCell = styled.div`
 
 export const WIDTH = 105
 export const HEIGHT = 105
+export const ANIMATIONTIME = 250
