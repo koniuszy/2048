@@ -4,7 +4,7 @@ import styled from "styled-components"
 import Numbers from "./Numbers"
 import { GlobalCell } from "./styledComponents"
 import { connect } from "react-redux"
-import { newGame } from "../redux/actions"
+import { newGame, move } from "../redux/actions"
 import { NUMBEROFCELLS } from "../utils/numberOfCells"
 
 const CellShadow = styled(GlobalCell)`
@@ -17,7 +17,9 @@ const CellShadow = styled(GlobalCell)`
 
 class Cells extends Component {
   componentDidMount() {
-    this.props.newGame(2)
+    if (localStorage.getItem("persist:numbers") === null) {
+      this.props.newGame(2)
+    }
   }
   makeCellsShadow = () => {
     const backgroundForCells = []
@@ -38,5 +40,5 @@ class Cells extends Component {
 
 export default connect(
   null,
-  { newGame }
+  { newGame, move }
 )(Cells)

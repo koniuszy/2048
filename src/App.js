@@ -4,13 +4,7 @@ import styled, { createGlobalStyle } from "styled-components"
 import Game from "./components/gameContainer"
 import { connect } from "react-redux"
 import { move } from "./redux/actions"
-import {
-  GODOWN,
-  GOUP,
-  GORIGHT,
-  GOLEFT,
-  SAVEPREVNUMBERS
-} from "./redux/constants"
+import { GODOWN, GOUP, GORIGHT, GOLEFT } from "./redux/constants"
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -44,16 +38,12 @@ class App extends React.Component {
     const left = "ArrowLeft"
     const right = "ArrowRight"
     if (key === down) {
-      this.props.move(SAVEPREVNUMBERS)
       this.props.move(GODOWN)
     } else if (key === up) {
-      this.props.move(SAVEPREVNUMBERS)
       this.props.move(GOUP)
     } else if (key === left) {
-      this.props.move(SAVEPREVNUMBERS)
       this.props.move(GOLEFT)
     } else if (key === right) {
-      this.props.move(SAVEPREVNUMBERS)
       this.props.move(GORIGHT)
     }
   }
@@ -68,13 +58,7 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    numbers: state.game.Numbers
-  }
-}
-
 export default connect(
-  mapStateToProps,
+  null,
   { move }
 )(App)

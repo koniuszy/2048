@@ -1,7 +1,14 @@
 import { NUMBEROFCELLS, ROW } from "../../../utils/numberOfCells"
 import { MERGE, NEWGAME, GORIGTH, GOLEFT, GOUP } from "../../constants"
 
-const arraysAreEqual = (arrayX, arrayY) => {
+const getFullCells = Numbers => {
+  let fullCells = []
+  Numbers.map(e => fullCells.push(e[0]))
+  return fullCells
+}
+
+export const arraysAreEqual = (arrayX, arrayY) => {
+  // only first 2 are equal, in case all equal ->JSON.string
   if (arrayX.length === arrayY.length) {
     for (let i = 0; i < arrayX.length; i++) {
       for (let c = 0; c < 2; c++) {
@@ -14,12 +21,6 @@ const arraysAreEqual = (arrayX, arrayY) => {
   } else {
     return false
   }
-}
-
-const getFullCells = Numbers => {
-  let fullCells = []
-  Numbers.map(e => fullCells.push(e[0]))
-  return fullCells
 }
 
 export const getEmptyCells = fullPositions => {
@@ -127,4 +128,21 @@ export const move = (Numbers, positionCanMove, PositionOfNextCell) => {
     newNumbers.push(newNumber)
   }
   return newNumbers
+}
+
+export const getPrevNumbers = (Numbers, PrevNumbers, PrevPrevNumbers) => {
+  let prevNumbers = Numbers
+  if (PrevPrevNumbers.length > 0 && arraysAreEqual(Numbers, PrevNumbers)) {
+    prevNumbers = PrevPrevNumbers
+  }
+  return prevNumbers
+}
+
+export const getPrevPrevNumbers = (Numbers, PrevNumbers, PrevPrevNumbers) => {
+  let prevPrevNumbers = PrevNumbers
+  if (PrevPrevNumbers.length > 0 && arraysAreEqual(Numbers, PrevNumbers)) {
+    prevPrevNumbers = PrevPrevNumbers
+  }
+
+  return prevPrevNumbers
 }

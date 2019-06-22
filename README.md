@@ -25,13 +25,11 @@ https://github.com/morajabi/styled-media-query
 https://www.styled-components.com/
 
 
-#### Redux and react-redux
+#### Redux and react-redux, redux-persist, redux-devtools-extension 
 https://redux.js.org/
 
 https://redux.js.org/basics/usage-with-react
 
-+ redux-devtools-extension 
-
-
-to instal: 
 https://www.npmjs.com/package/redux-persist
+
+https://github.com/zalmoxisus/redux-devtools-extension

@@ -54,6 +54,11 @@ class Numbers extends React.Component {
     textStyles: "",
     cellStyles: ""
   }
+  componentDidMount() {
+    if (localStorage.getItem("persist:numbers") !== null) {
+      this.fillCells()
+    }
+  }
 
   shouldComponentUpdate(nextProps) {
     let shouldUpdate = true

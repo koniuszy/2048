@@ -1,31 +1,35 @@
-import {
-  NEWGAME,
-  GODOWN,
-  GOUP,
-  GOLEFT,
-  GORIGHT,
-  UNDO,
-  SAVEPREVNUMBERS
-} from "../constants"
+import { NEWGAME, GODOWN, GOUP, GOLEFT, GORIGHT, UNDO } from "../constants"
 import { NUMBEROFCELLS, ROW } from "../../utils/numberOfCells"
 import {
   getEmptyCells,
   getRandomValue,
   getRandomNumberOfArray,
-  move
+  move,
+  getPrevNumbers,
+  getPrevPrevNumbers,
+  arraysAreEqual
 } from "./functions/game"
 
 const initialStates = {
   Numbers: [],
   PrevNumbers: [],
-  AmountOfUnDos: 3
+  PrevPrevNumbers: [],
+  AmountOfUnDos: 3,
+  HighestNumber: 2048
 }
 
 const reducer = (state = initialStates, action) => {
   const randomValue = getRandomValue()
-  const { Numbers } = state
+  const { Numbers, PrevNumbers, PrevPrevNumbers } = state
   let newNumbers = []
   let PositionOfNextCell
+
+  let prevNumbers = getPrevNumbers(Numbers, PrevNumbers, PrevPrevNumbers)
+  let prevPrevNumbers = getPrevPrevNumbers(
+    Numbers,
+    PrevNumbers,
+    PrevPrevNumbers
+  )
 
   switch (action.type) {
     case NEWGAME:
@@ -49,6 +53,7 @@ const reducer = (state = initialStates, action) => {
       return {
         ...state,
         PrevNumbers: newNumbers,
+        PrevPrevNumbers: [],
         Numbers: newNumbers,
         AmountOfUnDos: 3
       }
@@ -64,7 +69,9 @@ const reducer = (state = initialStates, action) => {
       newNumbers = move(Numbers, firstRowDown, PositionOfNextCell)
       return {
         ...state,
-        Numbers: newNumbers
+        Numbers: newNumbers,
+        PrevNumbers: prevNumbers,
+        PrevPrevNumbers: prevPrevNumbers
       }
 
     case GOUP:
@@ -78,7 +85,9 @@ const reducer = (state = initialStates, action) => {
       newNumbers = move(Numbers, firstRowUp, PositionOfNextCell)
       return {
         ...state,
-        Numbers: newNumbers
+        Numbers: newNumbers,
+        PrevNumbers: prevNumbers,
+        PrevPrevNumbers: prevPrevNumbers
       }
 
     case GORIGHT:
@@ -95,7 +104,9 @@ const reducer = (state = initialStates, action) => {
       newNumbers = move(Numbers, firstRowRight, PositionOfNextCell)
       return {
         ...state,
-        Numbers: newNumbers
+        Numbers: newNumbers,
+        PrevNumbers: prevNumbers,
+        PrevPrevNumbers: prevPrevNumbers
       }
 
     case GOLEFT:
@@ -112,7 +123,9 @@ const reducer = (state = initialStates, action) => {
       newNumbers = move(Numbers, firstRowLeft, PositionOfNextCell)
       return {
         ...state,
-        Numbers: newNumbers
+        Numbers: newNumbers,
+        PrevNumbers: prevNumbers,
+        PrevPrevNumbers: prevPrevNumbers
       }
 
     case UNDO:
@@ -121,15 +134,14 @@ const reducer = (state = initialStates, action) => {
       if (amountsOfUnDos >= 0) {
         newNumbersAfterUndo = state.PrevNumbers
       }
+      if (arraysAreEqual(Numbers, PrevNumbers)) {
+        newNumbersAfterUndo = PrevPrevNumbers
+      }
       return {
         ...state,
         Numbers: newNumbersAfterUndo,
-        AmountOfUnDos: amountsOfUnDos
-      }
-    case SAVEPREVNUMBERS:
-      return {
-        ...state,
-        PrevNumbers: state.Numbers
+        AmountOfUnDos: amountsOfUnDos,
+        PrevPrevNumbers: []
       }
 
     default:

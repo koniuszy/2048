@@ -30,6 +30,11 @@ const BestScore = styled.div`
   height: 50px;
   border-radius: 10px;
   margin: 50px;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 `
 
 const Wrapper = styled.div`
@@ -60,6 +65,21 @@ const Button = styled.button`
   ${props => props.styles}
 `
 
+const Title = styled.p`
+  letter-spacing: 2px;
+  line-height: 15px;
+  color: #eee4da;
+  margin: 0;
+`
+
+const HighestNumber = styled.h2`
+  width: 100%;
+  letter-spacing: 4px;
+  color: white;
+  margin: 0;
+  text-align: center;
+`
+
 const disableButton = (undo, numbers, prevNumbers) => {
   if (undo > 0 && numbers !== prevNumbers) {
     return false
@@ -81,7 +101,10 @@ const Game = props => {
     <>
       <Wrapper>
         <GameTitle>2048</GameTitle>
-        <BestScore />
+        <BestScore>
+          <Title>best</Title>
+          <HighestNumber>{props.highestNumber}</HighestNumber>
+        </BestScore>
       </Wrapper>
       <Container>
         <Cells />
@@ -104,7 +127,8 @@ const mapStateToProps = state => {
   return {
     undo: state.game.AmountOfUnDos,
     numbers: state.game.Numbers,
-    prevNumbers: state.game.PrevNumbers
+    prevNumbers: state.game.PrevNumbers,
+    highestNumber: state.game.HighestNumber
   }
 }
 
