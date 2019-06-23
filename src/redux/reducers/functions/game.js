@@ -111,6 +111,7 @@ export const move = (Numbers, positionCanMove, PositionOfNextCell) => {
       newNumber.push(value)
       newNumbers.push(newNumber)
     }
+    mergedAlready = false
     shouldMerge = false
     fullCells = getFullCells(newNumbers)
   }
@@ -145,4 +146,14 @@ export const getPrevPrevNumbers = (Numbers, PrevNumbers, PrevPrevNumbers) => {
   }
 
   return prevPrevNumbers
+}
+
+export const getScore = (numbers, score) => {
+  let newScore = score
+  numbers.map(number => {
+    if (score < number[1]) {
+      newScore = number[1]
+    }
+  })
+  return newScore
 }

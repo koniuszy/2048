@@ -102,7 +102,7 @@ const Game = props => {
       <Wrapper>
         <GameTitle>2048</GameTitle>
         <BestScore>
-          <Title>best</Title>
+          <Title>best merge</Title>
           <HighestNumber>{props.highestNumber}</HighestNumber>
         </BestScore>
       </Wrapper>

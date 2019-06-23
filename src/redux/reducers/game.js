@@ -7,7 +7,8 @@ import {
   move,
   getPrevNumbers,
   getPrevPrevNumbers,
-  arraysAreEqual
+  arraysAreEqual,
+  getScore
 } from "./functions/game"
 
 const initialStates = {
@@ -15,27 +16,26 @@ const initialStates = {
   PrevNumbers: [],
   PrevPrevNumbers: [],
   AmountOfUnDos: 3,
-  HighestNumber: 2048
+  HighestNumber: 4
 }
 
 const reducer = (state = initialStates, action) => {
   const randomValue = getRandomValue()
-  const { Numbers, PrevNumbers, PrevPrevNumbers } = state
-  let newNumbers = []
-  let PositionOfNextCell
-
+  const { Numbers, PrevNumbers, PrevPrevNumbers, HighestNumber } = state
   let prevNumbers = getPrevNumbers(Numbers, PrevNumbers, PrevPrevNumbers)
   let prevPrevNumbers = getPrevPrevNumbers(
     Numbers,
     PrevNumbers,
     PrevPrevNumbers
   )
+  let newNumbers = []
+  let PositionOfNextCell
+  let newScore
 
   switch (action.type) {
     case NEWGAME:
       let emptyCells = getEmptyCells()
       let randomPosition
-
       for (let i = 0; i < action.payload.amount; i++) {
         let PositionAndValue = []
         randomPosition = getRandomNumberOfArray(emptyCells)
@@ -49,7 +49,6 @@ const reducer = (state = initialStates, action) => {
         newNumbers.push(PositionAndValue)
         emptyCells = getEmptyCells(newNumbers[0])
       }
-
       return {
         ...state,
         PrevNumbers: newNumbers,
@@ -67,11 +66,13 @@ const reducer = (state = initialStates, action) => {
       }
       PositionOfNextCell = 4
       newNumbers = move(Numbers, firstRowDown, PositionOfNextCell)
+      newScore = getScore(newNumbers, HighestNumber)
       return {
         ...state,
         Numbers: newNumbers,
         PrevNumbers: prevNumbers,
-        PrevPrevNumbers: prevPrevNumbers
+        PrevPrevNumbers: prevPrevNumbers,
+        HighestNumber: newScore
       }
 
     case GOUP:
@@ -83,11 +84,13 @@ const reducer = (state = initialStates, action) => {
       }
       PositionOfNextCell = -4
       newNumbers = move(Numbers, firstRowUp, PositionOfNextCell)
+      newScore = getScore(newNumbers, HighestNumber)
       return {
         ...state,
         Numbers: newNumbers,
         PrevNumbers: prevNumbers,
-        PrevPrevNumbers: prevPrevNumbers
+        PrevPrevNumbers: prevPrevNumbers,
+        HighestNumber: newScore
       }
 
     case GORIGHT:
@@ -102,11 +105,13 @@ const reducer = (state = initialStates, action) => {
       }
       PositionOfNextCell = 1
       newNumbers = move(Numbers, firstRowRight, PositionOfNextCell)
+      newScore = getScore(newNumbers, HighestNumber)
       return {
         ...state,
         Numbers: newNumbers,
         PrevNumbers: prevNumbers,
-        PrevPrevNumbers: prevPrevNumbers
+        PrevPrevNumbers: prevPrevNumbers,
+        HighestNumber: newScore
       }
 
     case GOLEFT:
@@ -121,11 +126,13 @@ const reducer = (state = initialStates, action) => {
       }
       PositionOfNextCell = -1
       newNumbers = move(Numbers, firstRowLeft, PositionOfNextCell)
+      newScore = getScore(newNumbers, HighestNumber)
       return {
         ...state,
         Numbers: newNumbers,
         PrevNumbers: prevNumbers,
-        PrevPrevNumbers: prevPrevNumbers
+        PrevPrevNumbers: prevPrevNumbers,
+        HighestNumber: newScore
       }
 
     case UNDO:
