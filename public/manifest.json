@@ -1,15 +1,11 @@
 {
-  "short_name": "2048",
+  "short_name": "4096",
   "name": "The game based on 2048 concept",
   "icons": [
     {
       "src": "4096.png",
       "type": "image/png",
       "sizes": "192x192 512x512"
-    },
-    {
-      "src": "logo.svg",
-      "sizes": "36x36 48x48 72x72 96x96 144x144 192x192"
     }
   ],
   "start_url": ".",

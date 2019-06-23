@@ -1,6 +1,6 @@
 # 2048
 
-## Visit https://game4096.herokuapp.com to play! //not yet
+## Visit https://game4096.herokuapp.com to play!
 
 ### Download
 
@@ -40,7 +40,7 @@ https://github.com/leandrowd/react-easy-swipe
 
 
 
-###Supported:
+### Supported:
 * max 4 digits in one Cell
 * Responsive on all devices 
 * The newest versions of Chrome, Firefox, Opera, Safari

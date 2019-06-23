@@ -150,10 +150,6 @@ const Contact = styled(Wrapper)`
   margin: 10px;
 `
 
-const IconWrapper = styled(Wrapper)`
-  display: none;
-`
-
 class Game extends React.Component {
   state = {
     isSwaping: false
@@ -283,28 +279,6 @@ class Game extends React.Component {
           <A href='https://github.com/koniuszy'>Github</A>
           <A href='https://koniuszy.github.io/'>My website</A>
         </Contact>
-        <IconWrapper>
-          <div>
-            Icon made by{' '}
-            <a
-              href='https://www.flaticon.com/authors/smashicons'
-              title='Smashicons'
-            >
-              Smashicons
-            </a>{' '}
-            from{' '}
-            <a href='https://www.flaticon.com/' title='Flaticon'>
-              www.flaticon.com
-            </a>{' '}
-            is licensed by{' '}
-            <a
-              href='http://creativecommons.org/licenses/by/3.0/'
-              title='Creative Commons BY 3.0'
-            >
-              CC 3.0 BY
-            </a>
-          </div>
-        </IconWrapper>
       </>
     )
   }
