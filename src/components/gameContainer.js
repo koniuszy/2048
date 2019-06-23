@@ -257,8 +257,9 @@ class Game extends React.Component {
         </ButtonsWrapper>
         <Wrapper>
           <HowToPlay>
-            HOW TO PLAY: Use your arrow keys or swipe to move the tiles. When
-            two tiles with the same number touch, they merge into one!
+            HOW TO PLAY: Use your arrow keys or swipe on phone to move the
+            tiles. When two tiles with the same number touch, they merge into
+            one!
           </HowToPlay>
         </Wrapper>
         <Wrapper>
