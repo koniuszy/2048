@@ -53,7 +53,7 @@ const GameTitle = styled.h1`
 const Button = styled.button`
   background-color: #8f7a68;
   color: white;
-  margin: 50px;
+  margin: 50px 50px 7px 50px;
   padding: 10px;
   width: 150px;
   font-size: ${pixToRem(22)};
@@ -78,6 +78,37 @@ const HighestNumber = styled.h2`
   color: white;
   margin: 0;
   text-align: center;
+`
+
+const HowToPlay = styled.h3`
+  color: #eee4db;
+  opacity: 0.8;
+  width: 500px;
+  line-height: 22px;
+  letter-spacing: 2px;
+
+  ::after {
+    content: "";
+    width: 90%;
+    height: 2px;
+    background-color: #bbada1;
+    position: relative;
+    left: 5%;
+    display: block;
+    top: 20px;
+  }
+`
+
+const A = styled.a`
+  text-decoration: underline;
+  color: #eee4da;
+`
+
+const Contact = styled(Wrapper)`
+  width: 500px;
+  justify-content: space-around;
+  opacity: 0.8;
+  margin: 10px;
 `
 
 const disableButton = (undo, numbers, prevNumbers) => {
@@ -119,6 +150,22 @@ const Game = props => {
         </Button>
         <Button onClick={() => props.newGame(2)}>New Game</Button>
       </Wrapper>
+      <Wrapper>
+        <HowToPlay>
+          HOW TO PLAY: Use your arrow keys to move the tiles. When two tiles
+          with the same number touch, they merge into one!
+        </HowToPlay>
+      </Wrapper>
+      <Wrapper>
+        <HowToPlay>
+          NOTE: The game on <A href="https://play2048.co/">play2048.co</A> is
+          the original version of 2048.
+        </HowToPlay>
+      </Wrapper>
+      <Contact>
+        <A href="https://github.com/koniuszy">Github</A>
+        <A href="https://koniuszy.github.io/">My website</A>
+      </Contact>
     </>
   )
 }

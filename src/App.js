@@ -9,6 +9,14 @@ import { GODOWN, GOUP, GORIGHT, GOLEFT } from "./redux/constants"
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
+    background-color: #222;
+  }
+  ::-webkit-scrollbar {
+    width: 0.5em;
+  } 
+  ::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    border-radius: 5px;
   }
 `
 
@@ -17,10 +25,9 @@ const Page = styled.div`
   flex-wrap: wrap;
   justify-content: space-around;
   align-content: center;
-  width: 100vw;
+  max-width: 100vw;
   min-height: 100vh;
   min-height: calc(var(--vh, 1vh) * 100);
-  background-color: #222;
 `
 
 class App extends React.Component {

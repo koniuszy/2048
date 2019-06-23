@@ -15,7 +15,7 @@ const Cell = styled(GlobalCell)`
   left: 0;
 
   display: ${props => props.display};
-  animation: ${props => props.animation} 250ms linear;
+  animation: ${props => props.animation} 250ms ease-in;
   ${props => props.cellStyles};
 `
 
