@@ -64,6 +64,7 @@ class Numbers extends React.Component {
 
   shouldComponentUpdate(nextProps) {
     let shouldUpdate = true
+    // eslint-disable-next-line
     nextProps.numbers.map(number => {
       if (
         number[0] === this.props.position &&
@@ -102,8 +103,8 @@ class Numbers extends React.Component {
     let animation = none
     let cellStyles
     let textStyles
-    let move
 
+    // eslint-disable-next-line
     numbers.map(number => {
       if (number[0] === position) {
         numberExist = number
@@ -120,7 +121,7 @@ class Numbers extends React.Component {
         animation = create
       } else if (!numberExist[2]) {
         // console.log(number[2])
-        move = `position: absolute; ${numberExist[2]}`
+        // animation
       }
 
       let colorNumber = 0
@@ -150,7 +151,7 @@ class Numbers extends React.Component {
         "#fdc850",
         "#fdc53f",
         "#fdc22e",
-        "#fcd00f"
+        "#fcf00f"
       ]
       const shadows = [
         "",

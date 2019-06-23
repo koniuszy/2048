@@ -1,5 +1,5 @@
 import { NUMBEROFCELLS, ROW } from "../../../utils/numberOfCells"
-import { MERGE, NEWGAME, GORIGTH, GOLEFT, GOUP } from "../../constants"
+import { NEWGAME } from "../../constants"
 
 const getFullCells = Numbers => {
   let fullCells = []
@@ -150,6 +150,8 @@ export const getPrevPrevNumbers = (Numbers, PrevNumbers, PrevPrevNumbers) => {
 
 export const getScore = (numbers, score) => {
   let newScore = score
+
+  // eslint-disable-next-line
   numbers.map(number => {
     if (score < number[1]) {
       newScore = number[1]

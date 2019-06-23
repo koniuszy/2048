@@ -31,7 +31,7 @@ const GameWindow = styled.div`
 `
 
 const BestScore = styled.div`
-  ${backgroundColor};
+  background-color: #87705f;
   width: 200px;
   height: 50px;
   border-radius: 10px;
@@ -59,7 +59,7 @@ const GameTitle = styled.h1`
 `
 
 const Button = styled.button`
-  background-color: #8f7a68;
+  background-color: #87705f;
   color: white;
   margin: 50px 50px 7px 50px;
   padding: 10px;
@@ -80,7 +80,7 @@ const Button = styled.button`
 const Title = styled.p`
   letter-spacing: 2px;
   line-height: 15px;
-  color: #eee4da;
+  color: white;
   margin: 0;
 `
 
@@ -90,6 +90,7 @@ const HighestNumber = styled.h2`
   color: white;
   margin: 0;
   text-align: center;
+  opacity: 0.9;
 `
 
 const HowToPlay = styled.h3`
@@ -167,7 +168,7 @@ const Game = props => {
   return (
     <>
       <TitleWrapper>
-        <GameTitle>2048</GameTitle>
+        <GameTitle>4096</GameTitle>
         <BestScore>
           <Title>best merge</Title>
           <HighestNumber>{props.highestNumber}</HighestNumber>
@@ -196,6 +197,13 @@ const Game = props => {
         <HowToPlay>
           NOTE: The game on <A href="https://play2048.co/">play2048.co</A> is
           the original version of 2048.
+        </HowToPlay>
+      </Wrapper>
+      <Wrapper>
+        <HowToPlay>
+          GOAL: You can use Undo 3 times to cancel your last move. You cannot
+          use Undo twice in a row and when you start new Game. Try to achieve
+          4096! After that you can continue to gather more points.
         </HowToPlay>
       </Wrapper>
       <Contact>
