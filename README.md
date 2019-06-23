@@ -35,6 +35,11 @@ https://www.npmjs.com/package/redux-persist
 https://github.com/zalmoxisus/redux-devtools-extension
 
 
+####  react-easy-swipe
+https://github.com/leandrowd/react-easy-swipe
+
+
+
 ###Supported:
 * max 4 digits in one Cell
 * Responsive on all devices 

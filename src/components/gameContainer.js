@@ -1,12 +1,14 @@
-import React from "react"
-import media from "../media-query/media"
-import styled, { css } from "styled-components"
+import React from 'react'
+import media from '../media-query/media'
+import Cells from './cells'
+import pixToRem from '../utils/pixToRem'
+import Swipe from 'react-easy-swipe'
+import styled, { css } from 'styled-components'
 
-import { connect } from "react-redux"
-import { newGame, move } from "../redux/actions"
-import { UNDO } from "../redux/constants"
-import Cells from "./cells"
-import pixToRem from "../utils/pixToRem"
+import { connect } from 'react-redux'
+import { newGame, move } from '../redux/actions'
+import { UNDO } from '../redux/constants'
+import { GOUP, GODOWN, GOLEFT, GORIGHT } from '../redux/constants'
 
 const backgroundColor = css`
   background-color: #bbada1;
@@ -24,7 +26,7 @@ const GameWindow = styled.div`
   align-content: space-around;
   position: relative;
 
-  ${media.lessThan("small")`
+  ${media.lessThan('small')`
     width: 280px;
     height: 280px;
   `}
@@ -42,7 +44,7 @@ const BestScore = styled.div`
   align-items: center;
   justify-content: center;
 
-  ${media.lessThan("small")`
+  ${media.lessThan('small')`
    margin: 10px 0 0 0 ;
   `}
 `
@@ -53,7 +55,7 @@ const GameTitle = styled.h1`
   color: white;
   letter-spacing: 15px;
 
-  ${media.lessThan("small")`
+  ${media.lessThan('small')`
     display: none;
   `}
 `
@@ -72,7 +74,7 @@ const Button = styled.button`
 
   ${props => props.styles}
 
-  ${media.lessThan("small")`
+  ${media.lessThan('small')`
     margin: 10px 5px 10px 5px;
   `}
 `
@@ -101,7 +103,7 @@ const HowToPlay = styled.h3`
   letter-spacing: 2px;
 
   ::after {
-    content: "";
+    content: '';
     width: 90%;
     height: 2px;
     background-color: #bbada1;
@@ -111,7 +113,7 @@ const HowToPlay = styled.h3`
     top: 20px;
   }
 
-  ${media.lessThan("small")`
+  ${media.lessThan('small')`
     text-align: center;
     margin-left: 10px;
     margin-right: 10px;
@@ -130,13 +132,13 @@ const Wrapper = styled.div`
 `
 
 const ButtonsWrapper = styled(Wrapper)`
-  ${media.lessThan("small")`
+  ${media.lessThan('small')`
     order: -2;
   `}
 `
 
 const TitleWrapper = styled(Wrapper)`
-  ${media.lessThan("small")`
+  ${media.lessThan('small')`
     order: -3;
   `}
 `
@@ -158,60 +160,127 @@ const disableButton = (undo, numbers, prevNumbers) => {
 
 const getButtonStyles = (undo, numbers, prevNumbers) => {
   if (undo > 0 && numbers !== prevNumbers) {
-    return ""
+    return ''
   } else {
     return `opacity: 0.5; cursor: default;`
   }
 }
 
-const Game = props => {
-  return (
-    <>
-      <TitleWrapper>
-        <GameTitle>4096</GameTitle>
-        <BestScore>
-          <Title>best merge</Title>
-          <HighestNumber>{props.highestNumber}</HighestNumber>
-        </BestScore>
-      </TitleWrapper>
-      <GameWindow>
-        <Cells />
-      </GameWindow>
-      <ButtonsWrapper>
-        <Button
-          styles={getButtonStyles(props.undo, props.numbers, props.prevNumbers)}
-          disabled={disableButton(props.undo, props.numbers, props.prevNumbers)}
-          onClick={() => props.move(UNDO)}
+class Game extends React.Component {
+  state = {
+    isSwaping: false
+  }
+
+  componentDidMount() {
+    document.getElementById('GameWindow').addEventListener(
+      'touchmove',
+      function(e) {
+        e.preventDefault()
+      },
+      { passive: false }
+    )
+  }
+
+  onSwipeMove = (position, event) => {
+    if (Math.abs(position.x) > 30 || Math.abs(position.y) > 30) {
+      if (this.state.isSwaping === false) {
+        this.setState(
+          {
+            isSwaping: true
+          },
+          () => this.move(position)
+        )
+      }
+    }
+  }
+
+  onSwipeEnd = event => {
+    this.setState({
+      isSwaping: false
+    })
+  }
+
+  move = position => {
+    let direction
+    if (Math.abs(position.x) > Math.abs(position.y)) {
+      if (position.x > 0) {
+        direction = GORIGHT
+      } else {
+        direction = GOLEFT
+      }
+    } else {
+      if (position.y > 0) {
+        direction = GODOWN
+      } else {
+        direction = GOUP
+      }
+    }
+    this.props.move(direction)
+  }
+
+  render() {
+    return (
+      <>
+        <TitleWrapper>
+          <GameTitle>4096</GameTitle>
+          <BestScore>
+            <Title>best merge</Title>
+            <HighestNumber>{this.props.highestNumber}</HighestNumber>
+          </BestScore>
+        </TitleWrapper>
+        <Swipe
+          onSwipeStart={this.onSwipeStart}
+          onSwipeMove={this.onSwipeMove}
+          onSwipeEnd={this.onSwipeEnd}
         >
-          Undo: {props.undo}
-        </Button>
-        <Button onClick={() => props.newGame(2)}>New Game</Button>
-      </ButtonsWrapper>
-      <Wrapper>
-        <HowToPlay>
-          HOW TO PLAY: Use your arrow keys or swipe to move the tiles. When two
-          tiles with the same number touch, they merge into one!
-        </HowToPlay>
-      </Wrapper>
-      <Wrapper>
-        <HowToPlay>
-          NOTE: The game on <A href="https://play2048.co/">play2048.co</A> is
-          the original version of 2048.
-        </HowToPlay>
-      </Wrapper>
-      <Wrapper>
-        <HowToPlay>
-          GOAL: You can use Undo 3 times to cancel your last move. You cannot
-          use Undo twice in a row and when you start new Game. Try to achieve
-          4096! After that you can continue to gather more points.
-        </HowToPlay>
-      </Wrapper>
-      <Contact>
-        <A href="https://github.com/koniuszy">Github</A>
-        <A href="https://koniuszy.github.io/">My website</A>
-      </Contact>
-    </>
-  )
+          <GameWindow id='GameWindow'>
+            <Cells />
+          </GameWindow>
+        </Swipe>
+        <ButtonsWrapper>
+          <Button
+            styles={getButtonStyles(
+              this.props.undo,
+              this.props.numbers,
+              this.props.prevNumbers
+            )}
+            disabled={disableButton(
+              this.props.undo,
+              this.props.numbers,
+              this.props.prevNumbers
+            )}
+            onClick={() => this.props.move(UNDO)}
+          >
+            Undo: {this.props.undo}
+          </Button>
+          <Button onClick={() => this.props.newGame(2)}>New Game</Button>
+        </ButtonsWrapper>
+        <Wrapper>
+          <HowToPlay>
+            HOW TO PLAY: Use your arrow keys or swipe to move the tiles. When
+            two tiles with the same number touch, they merge into one!
+          </HowToPlay>
+        </Wrapper>
+        <Wrapper>
+          <HowToPlay>
+            NOTE: The game on <A href='https://play2048.co/'>play2048.co</A> is
+            the original version of 2048.
+          </HowToPlay>
+        </Wrapper>
+        <Wrapper>
+          <HowToPlay>
+            GOAL: You can use Undo 3 times to cancel your last move. You cannot
+            use Undo twice in a row and when you start new Game. Try to achieve
+            4096! After that you can continue to gather more points.
+          </HowToPlay>
+        </Wrapper>
+        <Contact>
+          <A href='https://github.com/koniuszy'>Github</A>
+          <A href='https://koniuszy.github.io/'>My website</A>
+        </Contact>
+      </>
+    )
+  }
 }
 
 const mapStateToProps = state => {
