@@ -1,6 +1,6 @@
 # 2048
 
-## Visit www.2048.com to play! //not yet
+## Visit https://game4096.herokuapp.com to play! //not yet
 
 ### Download
 

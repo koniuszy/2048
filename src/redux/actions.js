@@ -1,4 +1,4 @@
-import { NEWGAME } from "./constants"
+import { NEWGAME } from './constants'
 
 export const newGame = amount => {
   return {

@@ -1,10 +1,10 @@
-import React from "react"
-import styled, { createGlobalStyle } from "styled-components"
+import React from 'react'
+import styled, { createGlobalStyle } from 'styled-components'
 
-import Game from "./components/gameContainer"
-import { connect } from "react-redux"
-import { move } from "./redux/actions"
-import { GODOWN, GOUP, GORIGHT, GOLEFT } from "./redux/constants"
+import Game from './components/game'
+import { connect } from 'react-redux'
+import { move } from './redux/actions'
+import { GODOWN, GOUP, GORIGHT, GOLEFT } from './redux/constants'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -34,16 +34,16 @@ class App extends React.Component {
   componentDidMount() {
     // type and function
     // https://developer.mozilla.org/en-US/docs/Web/Events ctrl + f => 	KeyboardEvent
-    window.addEventListener("keydown", this.checkKeyPress)
+    window.addEventListener('keydown', this.checkKeyPress)
   }
 
   checkKeyPress = e => {
     e.preventDefault() // scrolling
     const key = e.key
-    const down = "ArrowDown"
-    const up = "ArrowUp"
-    const left = "ArrowLeft"
-    const right = "ArrowRight"
+    const down = 'ArrowDown'
+    const up = 'ArrowUp'
+    const left = 'ArrowLeft'
+    const right = 'ArrowRight'
     if (key === down) {
       this.props.move(GODOWN)
     } else if (key === up) {

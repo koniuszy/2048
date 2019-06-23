@@ -150,21 +150,9 @@ const Contact = styled(Wrapper)`
   margin: 10px;
 `
 
-const disableButton = (undo, numbers, prevNumbers) => {
-  if (undo > 0 && numbers !== prevNumbers) {
-    return false
-  } else {
-    return true
-  }
-}
-
-const getButtonStyles = (undo, numbers, prevNumbers) => {
-  if (undo > 0 && numbers !== prevNumbers) {
-    return ''
-  } else {
-    return `opacity: 0.5; cursor: default;`
-  }
-}
+const IconWrapper = styled(Wrapper)`
+  display: none;
+`
 
 class Game extends React.Component {
   state = {
@@ -218,6 +206,30 @@ class Game extends React.Component {
     this.props.move(direction)
   }
 
+  disableButton = () => {
+    if (
+      this.props.undo > 0 &&
+      this.props.numbers !== this.props.prevNumbers &&
+      this.props.numbers !== this.props.prevPrevNumbers
+    ) {
+      return false
+    } else {
+      return true
+    }
+  }
+
+  getButtonStyles = () => {
+    if (
+      this.props.undo > 0 &&
+      this.props.numbers !== this.props.prevNumbers &&
+      this.props.numbers !== this.props.prevPrevNumbers
+    ) {
+      return ''
+    } else {
+      return `opacity: 0.5; cursor: default;`
+    }
+  }
+
   render() {
     return (
       <>
@@ -239,16 +251,8 @@ class Game extends React.Component {
         </Swipe>
         <ButtonsWrapper>
           <Button
-            styles={getButtonStyles(
-              this.props.undo,
-              this.props.numbers,
-              this.props.prevNumbers
-            )}
-            disabled={disableButton(
-              this.props.undo,
-              this.props.numbers,
-              this.props.prevNumbers
-            )}
+            styles={this.getButtonStyles()}
+            disabled={this.disableButton()}
             onClick={() => this.props.move(UNDO)}
           >
             Undo: {this.props.undo}
@@ -279,6 +283,28 @@ class Game extends React.Component {
           <A href='https://github.com/koniuszy'>Github</A>
           <A href='https://koniuszy.github.io/'>My website</A>
         </Contact>
+        <IconWrapper>
+          <div>
+            Icon made by{' '}
+            <a
+              href='https://www.flaticon.com/authors/smashicons'
+              title='Smashicons'
+            >
+              Smashicons
+            </a>{' '}
+            from{' '}
+            <a href='https://www.flaticon.com/' title='Flaticon'>
+              www.flaticon.com
+            </a>{' '}
+            is licensed by{' '}
+            <a
+              href='http://creativecommons.org/licenses/by/3.0/'
+              title='Creative Commons BY 3.0'
+            >
+              CC 3.0 BY
+            </a>
+          </div>
+        </IconWrapper>
       </>
     )
   }
@@ -289,6 +315,7 @@ const mapStateToProps = state => {
     undo: state.game.AmountOfUnDos,
     numbers: state.game.Numbers,
     prevNumbers: state.game.PrevNumbers,
+    prevPrevNumbers: state.game.PrevPrevNumbers,
     highestNumber: state.game.HighestNumber
   }
 }
