@@ -1,4 +1,5 @@
 import React from "react"
+import media from "../media-query/media"
 import styled, { css } from "styled-components"
 
 import { connect } from "react-redux"
@@ -11,7 +12,7 @@ const backgroundColor = css`
   background-color: #bbada1;
 `
 
-const Container = styled.div`
+const GameWindow = styled.div`
   ${backgroundColor};
   width: 500px;
   height: 500px;
@@ -22,6 +23,11 @@ const Container = styled.div`
   justify-content: space-around;
   align-content: space-around;
   position: relative;
+
+  ${media.lessThan("small")`
+    width: 280px;
+    height: 280px;
+  `}
 `
 
 const BestScore = styled.div`
@@ -35,12 +41,10 @@ const BestScore = styled.div`
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-`
 
-const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
+  ${media.lessThan("small")`
+   margin: 10px 0 0 0 ;
+  `}
 `
 
 const GameTitle = styled.h1`
@@ -48,6 +52,10 @@ const GameTitle = styled.h1`
   opacity: 0.7;
   color: white;
   letter-spacing: 15px;
+
+  ${media.lessThan("small")`
+    display: none;
+  `}
 `
 
 const Button = styled.button`
@@ -63,6 +71,10 @@ const Button = styled.button`
   cursor: pointer;
 
   ${props => props.styles}
+
+  ${media.lessThan("small")`
+    margin: 10px 5px 10px 5px;
+  `}
 `
 
 const Title = styled.p`
@@ -97,11 +109,35 @@ const HowToPlay = styled.h3`
     display: block;
     top: 20px;
   }
+
+  ${media.lessThan("small")`
+    text-align: center;
+    margin-left: 10px;
+    margin-right: 10px;
+  `}
 `
 
 const A = styled.a`
   text-decoration: underline;
   color: #eee4da;
+`
+
+const Wrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`
+
+const ButtonsWrapper = styled(Wrapper)`
+  ${media.lessThan("small")`
+    order: -2;
+  `}
+`
+
+const TitleWrapper = styled(Wrapper)`
+  ${media.lessThan("small")`
+    order: -3;
+  `}
 `
 
 const Contact = styled(Wrapper)`
@@ -130,17 +166,17 @@ const getButtonStyles = (undo, numbers, prevNumbers) => {
 const Game = props => {
   return (
     <>
-      <Wrapper>
+      <TitleWrapper>
         <GameTitle>2048</GameTitle>
         <BestScore>
           <Title>best merge</Title>
           <HighestNumber>{props.highestNumber}</HighestNumber>
         </BestScore>
-      </Wrapper>
-      <Container>
+      </TitleWrapper>
+      <GameWindow>
         <Cells />
-      </Container>
-      <Wrapper>
+      </GameWindow>
+      <ButtonsWrapper>
         <Button
           styles={getButtonStyles(props.undo, props.numbers, props.prevNumbers)}
           disabled={disableButton(props.undo, props.numbers, props.prevNumbers)}
@@ -149,11 +185,11 @@ const Game = props => {
           Undo: {props.undo}
         </Button>
         <Button onClick={() => props.newGame(2)}>New Game</Button>
-      </Wrapper>
+      </ButtonsWrapper>
       <Wrapper>
         <HowToPlay>
-          HOW TO PLAY: Use your arrow keys to move the tiles. When two tiles
-          with the same number touch, they merge into one!
+          HOW TO PLAY: Use your arrow keys or swipe to move the tiles. When two
+          tiles with the same number touch, they merge into one!
         </HowToPlay>
       </Wrapper>
       <Wrapper>

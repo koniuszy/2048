@@ -1,8 +1,9 @@
 import React from "react"
+import media from "../media-query/media"
+import pixToRem from "../utils/pixToRem"
 import styled, { keyframes } from "styled-components"
 
-import { GlobalCell, WIDTH, HEIGHT, ANIMATIONTIME } from "./styledComponents"
-import pixToRem from "../utils/pixToRem"
+import { GlobalCell, ANIMATIONTIME } from "./styledComponents"
 import { connect } from "react-redux"
 import { NEWGAME } from "../redux/constants"
 
@@ -10,7 +11,7 @@ const Cell = styled(GlobalCell)`
   justify-content: center;
   align-items: center;
   align-content: center;
-  transition: top 5s linear, left 250ms linear;
+  transition: top 5s linear, left 250ms ease-in;
   top: 0;
   left: 0;
 
@@ -27,10 +28,11 @@ const Value = styled.h3`
   user-select: none;
 
   ${props => props.textStyles};
-`
 
-const heightInAnimation = `${HEIGHT + 10}px`
-const widthInAnimation = `${WIDTH + 10}px`
+  ${media.lessThan("small")`
+    font-size: ${pixToRem(28)};
+  `}
+`
 
 const create = keyframes`
   0% {
@@ -38,12 +40,12 @@ const create = keyframes`
     height: 0px;
   }
   90% {
-    width: ${widthInAnimation};
-    height: ${heightInAnimation};
+    width: 110%;
+    height: 115%;
   }
   100% {
-    width: ${WIDTH + "px"};
-    height: ${HEIGHT + "px"};
+    width: 100%;
+    height: 105%;
   }
 `
 

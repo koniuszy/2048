@@ -33,3 +33,9 @@ https://redux.js.org/basics/usage-with-react
 https://www.npmjs.com/package/redux-persist
 
 https://github.com/zalmoxisus/redux-devtools-extension
+
+
+###Supported:
+* max 4 digits in one Cell
+* Responsive on all devices 
+* The newest versions of Chrome, Firefox, Opera, Safari
