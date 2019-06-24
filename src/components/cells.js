@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import Numbers from './Numbers'
+import Numbers from './numbers'
 import media from '../media-query/media'
 
-import {
-  GlobalCell,
-  ANIMATIONTIME,
-  EXTENDSMALL,
-  EXTEND
-} from './styledComponents'
+import { ANIMATIONTIME, EXTENDSMALL, EXTEND } from '../utils/constants'
+import { GlobalCell } from '../utils/globalCell'
 import { connect } from 'react-redux'
 import { newGame, move } from '../redux/actions'
 import { NUMBEROFCELLS } from '../utils/numberOfCells'

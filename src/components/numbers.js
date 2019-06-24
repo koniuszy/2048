@@ -3,12 +3,8 @@ import media from '../media-query/media'
 import pixToRem from '../utils/pixToRem'
 import styled, { keyframes } from 'styled-components'
 
-import {
-  GlobalCell,
-  ANIMATIONTIME,
-  EXTENDSMALL,
-  EXTEND
-} from './styledComponents'
+import { ANIMATIONTIME, EXTENDSMALL, EXTEND } from '../utils/constants'
+import { GlobalCell } from '../utils/globalCell'
 import { connect } from 'react-redux'
 import { NEWGAME } from '../redux/constants'
 

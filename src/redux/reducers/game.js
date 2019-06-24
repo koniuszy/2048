@@ -1,15 +1,16 @@
-import { NEWGAME, GODOWN, GOUP, GOLEFT, GORIGHT, UNDO } from "../constants"
-import { NUMBEROFCELLS, ROW } from "../../utils/numberOfCells"
+import { NEWGAME, GODOWN, GOUP, GOLEFT, GORIGHT, UNDO } from '../constants'
+import { NUMBEROFCELLS, ROW } from '../../utils/numberOfCells'
+import { move } from './functions/move'
 import {
   getEmptyCells,
   getRandomValue,
   getRandomNumberOfArray,
-  move,
   getPrevNumbers,
   getPrevPrevNumbers,
   arraysAreEqual,
-  getScore
-} from "./functions/game"
+  getScore,
+  sort
+} from './functions/game'
 
 const initialStates = {
   Numbers: [],
@@ -58,9 +59,7 @@ const reducer = (state = initialStates, action) => {
       }
 
     case GODOWN:
-      Numbers.sort(function(a, b) {
-        return b[0] - a[0]
-      })
+      sort(Numbers, true)
       const firstRowDown = position => {
         return position < NUMBEROFCELLS - ROW
       }
@@ -76,9 +75,7 @@ const reducer = (state = initialStates, action) => {
       }
 
     case GOUP:
-      Numbers.sort(function(a, b) {
-        return a[0] - b[0]
-      })
+      sort(Numbers)
       const firstRowUp = position => {
         return position >= ROW
       }
@@ -94,9 +91,7 @@ const reducer = (state = initialStates, action) => {
       }
 
     case GORIGHT:
-      Numbers.sort(function(a, b) {
-        return b[0] - a[0]
-      })
+      sort(Numbers, true)
       const firstRowRight = position => {
         if (position === NUMBEROFCELLS - 1) {
           return false
@@ -115,9 +110,7 @@ const reducer = (state = initialStates, action) => {
       }
 
     case GOLEFT:
-      Numbers.sort(function(a, b) {
-        return a[0] - b[0]
-      })
+      sort(Numbers)
       const firstRowLeft = position => {
         if (position === 0) {
           return false

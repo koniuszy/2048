@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 import { newGame, move } from '../redux/actions'
 import { UNDO } from '../redux/constants'
 import { GOUP, GODOWN, GOLEFT, GORIGHT } from '../redux/constants'
-import { ANIMATIONTIME } from './styledComponents'
+import { ANIMATIONTIME, EXTENDEDCONTAINER } from '../utils/constants'
 
 const backgroundColor = css`
   background-color: #bbada1;
@@ -37,6 +37,8 @@ const GameWindow = styled.div`
 
   ${media.lessThan('small')`
     margin-bottom: 10px;
+    width: 280px;
+     height: 280px; 
     ${props => props.fullScreen}
   `}
 `
@@ -182,7 +184,7 @@ const Extender = styled.svg`
 class Game extends React.Component {
   state = {
     isSwaping: false,
-    fullScreen: 'width: 280px; height: 280px',
+    fullScreen: '',
     extend: false
   }
 
@@ -260,12 +262,12 @@ class Game extends React.Component {
   extend = () => {
     if (!this.state.extend) {
       this.setState({
-        fullScreen: 'width: 100%;  height: 370px; padding: 5px;',
+        fullScreen: EXTENDEDCONTAINER,
         extend: true
       })
     } else {
       this.setState({
-        fullScreen: 'width: 280px; height: 280px; ',
+        fullScreen: '',
         extend: false
       })
     }

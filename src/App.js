@@ -32,25 +32,19 @@ const Page = styled.div`
 
 class App extends React.Component {
   componentDidMount() {
-    // type and function
-    // https://developer.mozilla.org/en-US/docs/Web/Events ctrl + f => 	KeyboardEvent
     window.addEventListener('keydown', this.checkKeyPress)
   }
 
   checkKeyPress = e => {
     e.preventDefault() // scrolling
     const key = e.key
-    const down = 'ArrowDown'
-    const up = 'ArrowUp'
-    const left = 'ArrowLeft'
-    const right = 'ArrowRight'
-    if (key === down) {
+    if (key === 'ArrowDown') {
       this.props.move(GODOWN)
-    } else if (key === up) {
+    } else if (key === 'ArrowUp') {
       this.props.move(GOUP)
-    } else if (key === left) {
+    } else if (key === 'ArrowLeft') {
       this.props.move(GOLEFT)
-    } else if (key === right) {
+    } else if (key === 'ArrowRight') {
       this.props.move(GORIGHT)
     }
   }
