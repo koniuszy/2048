@@ -1,7 +1,7 @@
-export const GODOWN = "GODOWN"
-export const GOUP = "GOUP"
-export const GORIGHT = "GORIGHT"
-export const GOLEFT = "GOLEFT"
-export const NEWGAME = "NEWGAME"
-export const MERGE = "MERGE"
-export const UNDO = "UNDO"
+export const GODOWN = 'GODOWN'
+export const GOUP = 'GOUP'
+export const GORIGHT = 'GORIGHT'
+export const GOLEFT = 'GOLEFT'
+export const NEWGAME = 'NEWGAME'
+export const MERGE = 'MERGE'
+export const UNDO = 'UNDO'

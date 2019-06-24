@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Numbers from './numbers'
 import media from '../media-query/media'
 
-import { ANIMATIONTIME, EXTENDSMALL, EXTEND } from '../utils/constants'
+import { ANIMATIONTIME, EXTEND } from '../utils/constants'
 import { GlobalCell } from '../utils/globalCell'
 import { connect } from 'react-redux'
 import { newGame, move } from '../redux/actions'
@@ -24,12 +24,12 @@ const CellShadow = styled(GlobalCell)`
   transition: width ${ANIMATIONTIME}ms ease-in,
     height ${ANIMATIONTIME}ms ease-in;
 
-  ${media.between('xSmall', 'small')`
-    ${props => (props.extend ? EXTEND : '')}
+  ${media.lessThan('xSmall')`
+    ${props => (props.extend ? '' : '')}
   `}
 
-  ${media.lessThan('xSmall')`
-    ${props => (props.extend ? EXTENDSMALL : '')}
+  ${media.between('xSmall', 'small')`
+    ${props => (props.extend ? EXTEND : '')}
   `}
 `
 

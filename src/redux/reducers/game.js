@@ -16,6 +16,7 @@ const initialStates = {
   Numbers: [],
   PrevNumbers: [],
   PrevPrevNumbers: [],
+  Animation: '',
   AmountOfUnDos: 3,
   HighestNumber: 4
 }
@@ -32,6 +33,7 @@ const reducer = (state = initialStates, action) => {
   let newNumbers = []
   let PositionOfNextCell
   let newScore
+  let animations
 
   switch (action.type) {
     case NEWGAME:
@@ -66,12 +68,15 @@ const reducer = (state = initialStates, action) => {
       PositionOfNextCell = 4
       newNumbers = move(Numbers, firstRowDown, PositionOfNextCell)
       newScore = getScore(newNumbers, HighestNumber)
+      // console.log(JSON.stringify(newNumbers))
+      //animations = getAnimation(newNumbers, Numbers)
       return {
         ...state,
         Numbers: newNumbers,
         PrevNumbers: prevNumbers,
         PrevPrevNumbers: prevPrevNumbers,
-        HighestNumber: newScore
+        HighestNumber: newScore,
+        Animations: animations
       }
 
     case GOUP:

@@ -35,11 +35,18 @@ const GameWindow = styled.div`
   transition: width ${ANIMATIONTIME}ms ease-in,
     height ${ANIMATIONTIME}ms ease-in;
 
-  ${media.lessThan('small')`
+  ${media.lessThan('xSmall')`
     margin-bottom: 10px;
     width: 280px;
-     height: 280px; 
-    ${props => props.fullScreen}
+     height: 280px;
+  `}
+
+  ${media.between('xSmall', 'small')`
+    padding: 0;
+    margin-bottom: 10px;
+    width: 280px;
+     height: 280px;
+      ${props => props.fullScreen}
   `}
 `
 
@@ -176,7 +183,11 @@ const Extender = styled.svg`
   cursor: pointer;
   display: none;
 
-  ${media.lessThan('small')`
+  ${media.lessThan('xSmall')`
+    display: none;
+  `};
+
+  ${media.between('xSmall', 'small')`
     display: block;
   `};
 `

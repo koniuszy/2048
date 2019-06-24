@@ -7,10 +7,10 @@ export const getFullCells = Numbers => {
 }
 
 export const arraysAreEqual = (arrayX, arrayY) => {
-  // only first 2 are equal, in case all equal ->JSON.string
   if (arrayX.length === arrayY.length) {
     for (let i = 0; i < arrayX.length; i++) {
       for (let c = 0; c < 2; c++) {
+        // only first 2 are equal, in case all equal -> compare Json
         if (arrayX[i][c] !== arrayY[i][c]) {
           return false
         }
