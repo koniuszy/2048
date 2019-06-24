@@ -44,3 +44,4 @@ https://github.com/leandrowd/react-easy-swipe
 * max 4 digits in one Cell
 * Responsive on all devices 
 * The newest versions of Chrome, Firefox, Opera, Safari
+* PWA unless you miss https

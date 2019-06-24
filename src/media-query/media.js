@@ -1,7 +1,8 @@
-import { generateMedia } from "styled-media-query"
+import { generateMedia } from 'styled-media-query'
 
 const media = generateMedia({
-  small: "550px"
+  small: '550px',
+  xSmall: '350px'
 })
 
 export default media
