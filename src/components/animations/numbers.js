@@ -16,13 +16,16 @@ export const create = keyframes`
 export const merge = keyframes`
  0% {
     height: 100%;
+    position: static;
   }
 
-  30% {
+  50% {
     height: 115%;
+    position: static;
   }
 
   100% {
     height: 100%;
+    position: static;
   }
 `

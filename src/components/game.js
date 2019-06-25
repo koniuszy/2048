@@ -196,7 +196,8 @@ class Game extends React.Component {
   state = {
     isSwaping: false,
     fullScreen: '',
-    extend: false
+    extend: false,
+    disabledDuringAnimation: false
   }
 
   componentDidMount() {
@@ -284,6 +285,24 @@ class Game extends React.Component {
     }
   }
 
+  handleClick = () => {
+    this.setState(
+      {
+        disabledDuringAnimation: true
+      },
+      this.start
+    )
+  }
+
+  start = () => {
+    this.props.newGame(2)
+    setTimeout(() => {
+      this.setState({
+        disabledDuringAnimation: false
+      })
+    }, ANIMATIONTIME * 2)
+  }
+
   render() {
     return (
       <>
@@ -329,7 +348,12 @@ class Game extends React.Component {
           >
             Undo: {this.props.undo}
           </Button>
-          <Button onClick={() => this.props.newGame(2)}>New Game</Button>
+          <Button
+            disabled={this.state.disabledDuringAnimation}
+            onClick={this.handleClick}
+          >
+            New Game
+          </Button>
         </ButtonsWrapper>
         <Wrapper>
           <HowToPlay>

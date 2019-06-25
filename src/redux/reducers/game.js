@@ -68,8 +68,6 @@ const reducer = (state = initialStates, action) => {
       PositionOfNextCell = 4
       newNumbers = move(Numbers, firstRowDown, PositionOfNextCell)
       newScore = getScore(newNumbers, HighestNumber)
-      // console.log(JSON.stringify(newNumbers))
-      //animations = getAnimation(newNumbers, Numbers)
       return {
         ...state,
         Numbers: newNumbers,

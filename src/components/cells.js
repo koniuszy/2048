@@ -46,10 +46,12 @@ class Cells extends Component {
         <CellWrapper key={i}>
           <CellShadow extend={this.props.extend}>
             <Numbers extend={this.props.extend} position={i} />
+            <Numbers extend={this.props.extend} position={i + NUMBEROFCELLS} />
           </CellShadow>
         </CellWrapper>
       )
     }
+
     return backgroundForCells
   }
 

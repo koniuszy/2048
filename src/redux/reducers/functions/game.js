@@ -1,8 +1,14 @@
 import { NUMBEROFCELLS } from '../../../utils/numberOfCells'
+import { WILLMERGE } from '../../constants'
 
 export const getFullCells = Numbers => {
   let fullCells = []
-  Numbers.map(e => fullCells.push(e[0]))
+  // eslint-disable-next-line
+  Numbers.map(e => {
+    if (e[3] !== WILLMERGE) {
+      fullCells.push(e[0])
+    }
+  })
   return fullCells
 }
 
@@ -84,4 +90,25 @@ export const sort = (Numbers, desc) => {
       return a[0] - b[0]
     })
   }
+}
+
+export const getPositionForAnimation = (position, newPosition) => {
+  let animation = 'top: 0; left: 0;'
+  let movement = newPosition - position
+  if (movement > 0) {
+    if (movement > 3) {
+      animation = `top: -${(120 / 4) * movement}%;`
+    } else {
+      animation = `left: -${120 * movement}%;`
+    }
+  } else if (movement < 0) {
+    movement = Math.abs(movement)
+    if (movement > 3) {
+      animation = `top: ${(120 / 4) * movement}%;`
+    } else {
+      animation = `left: ${120 * movement}%;`
+    }
+  }
+
+  return animation
 }

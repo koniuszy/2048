@@ -6,21 +6,28 @@ import styled from 'styled-components'
 import { ANIMATIONTIME, EXTEND } from '../utils/constants'
 import { GlobalCell } from '../utils/globalCell'
 import { connect } from 'react-redux'
-import { NEWGAME, MERGE } from '../redux/constants'
+import { NEWGAME, MERGE, WILLMERGE } from '../redux/constants'
 import { create, merge } from './animations/numbers'
+import {
+  getColor,
+  getShadow,
+  getFontColor,
+  getFontSize
+} from './functions/numberStyle'
 
 const Cell = styled(GlobalCell)`
+  position: absolute;
   justify-content: center;
   align-items: center;
   font-weight: 700;
   text-align: center;
   user-select: none;
-  transition: margin ${ANIMATIONTIME}ms ease-in,
-    width ${ANIMATIONTIME}ms ease-in, height ${ANIMATIONTIME}ms ease-in;
+  transition: left ${ANIMATIONTIME}ms ease-in, top ${ANIMATIONTIME}ms ease-in,
+    background-color ${ANIMATIONTIME}ms ease-in, color ${ANIMATIONTIME}ms ease-in;
 
-  display: ${props => props.display};
   animation: ${props => props.animation} ${ANIMATIONTIME}ms ease-in;
-  ${props => props.cellStyles};
+  ${props => props.cellStyles}
+  ${props => props.newPosition}
 
   ${media.lessThan('xSmall')`
     font-size: ${pixToRem(28)} !important;
@@ -34,59 +41,81 @@ const Cell = styled(GlobalCell)`
 
 class Numbers extends React.Component {
   state = {
-    value: null,
-    animation: 'none',
-    cellStyles: ''
+    Value: null,
+    Animation: 'none',
+    CellStyles: '',
+    NewPosition: ''
   }
+
   componentDidMount() {
     if (localStorage.getItem('persist:numbers') !== null) {
       this.fillCells()
     }
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
     let shouldUpdate = true
     // eslint-disable-next-line
     nextProps.numbers.map(number => {
       if (
         number[0] === this.props.position &&
-        number[1] === this.state.value &&
+        number[1] === this.state.Value &&
         number[2] !== NEWGAME &&
-        number[2] !== MERGE &&
+        number[3] !== MERGE &&
+        number[3] !== WILLMERGE &&
         nextProps.extend === this.props.extend
       ) {
         shouldUpdate = false
       }
     })
+
+    if (this.state.NewPosition !== nextState.NewPosition) {
+      shouldUpdate = true
+    }
     return shouldUpdate
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (
       this.props.numbers !== null &&
       prevProps.numbers !== this.props.numbers
     ) {
       this.fillCells()
+    } else {
+      // console.log(prevState)
     }
+  }
+
+  startRelocateNumber = (pos, val, move, type, initialPosition) => {
+    console.log(pos, val, move, type, initialPosition)
+    let position = 'left: 0; top: 0;'
+    if (type === WILLMERGE) {
+      position = move
+    }
+    setTimeout(() => {
+      this.setState({
+        NewPosition: position
+      })
+    }, 0)
   }
 
   closeAnimation = () => {
     setTimeout(() => {
       this.setState({
-        animation: 'none'
+        Animation: 'none'
       })
     }, ANIMATIONTIME)
   }
 
   fillCells = () => {
-    // this.props.numbers => array[i][0] position (0-15) array[i][1] value (initial 2 or 4) array[i][2] type of animation
+    // this.props.numbers => array[i][0] position (0-15) array[i][1] value (initial 2 or 4) array[i][2] movement array[i][3] Merge ?
     const { position, numbers } = this.props
     const none = 'none'
     const flex = 'flex'
     let numberExist = false
     let animation = none
     let cellStyles
-
+    let display = flex
     // eslint-disable-next-line
     numbers.map(number => {
       if (number[0] === position) {
@@ -96,82 +125,94 @@ class Numbers extends React.Component {
 
     // eslint-disable-next-line
     if (numberExist) {
-      let fontColor = 'black'
-      let shadow = 'none'
-      let size = pixToRem(48)
-      let color
-      let margin = '0 0 0 0'
+      let value = numberExist[1]
+      let zIndex = 3
+      let initialPosition = ''
 
       if (numberExist[2] === NEWGAME) {
         animation = create
-      } else if (numberExist[2] === MERGE) {
+        display = none
+      } else if (numberExist[3] === MERGE) {
         animation = merge
-      } else {
-        margin = numberExist[2]
+        initialPosition = numberExist[2]
+        value = value / 2
+        zIndex = 5
+      } else if (numberExist[3] === WILLMERGE) {
+        initialPosition = 'left: 0; top: 0;'
+      } else if (numberExist[2]) {
+        initialPosition = numberExist[2]
       }
 
-      let colorNumber = 0
-      let shadowNumber = 0
-      let numberValue = numberExist[1]
+      let color = getColor(value)
+      let shadow = getShadow(value)
+      let size = getFontSize(value)
+      let fontColor = getFontColor(value)
 
-      while (numberValue > 2) {
-        numberValue = numberValue / 2
-        if (colorNumber <= 12) {
-          colorNumber++
-        } else {
-          numberValue = 1
+      cellStyles = `z-index: ${zIndex}; background-color: ${color}; box-shadow: ${shadow}; display: ${display}; color: ${fontColor}; font-size: ${size}; ${initialPosition}`
+
+      if (animation !== create)
+        this.setState(
+          {
+            NewPosition: '', //tctd
+            Value: value,
+            CellStyles: cellStyles
+          },
+          () =>
+            this.startRelocateNumber(
+              numberExist[0],
+              numberExist[1],
+              numberExist[2],
+              numberExist[3],
+              initialPosition
+            )
+        )
+
+      if (numberExist[3] === WILLMERGE) {
+        display = none
+        cellStyles = `display: ${display};`
+        setTimeout(() => {
+          this.setState({
+            CellStyles: cellStyles,
+            Value: null
+          })
+        }, ANIMATIONTIME)
+      }
+
+      if (numberExist[3] === MERGE || numberExist[2] === NEWGAME) {
+        if (animation === create) {
+          display = none
+          cellStyles = `display: ${display};`
+          this.setState({
+            CellStyles: cellStyles
+          })
         }
-        if (colorNumber >= 8) {
-          shadowNumber++
+        if (animation === merge) {
+          value = value * 2
+          initialPosition = ''
+          color = getColor(value)
+          shadow = getShadow(value)
+          size = getFontSize(value)
+          fontColor = getFontColor(value)
         }
+        display = flex
+        cellStyles = `z-index: ${zIndex}; background-color: ${color}; box-shadow: ${shadow}; display: ${display}; color: ${fontColor}; font-size: ${size}; ${initialPosition}`
+        setTimeout(() => {
+          this.setState(
+            {
+              NewPosition: '',
+              CellStyles: cellStyles,
+              Animation: animation,
+              Value: value
+            },
+            this.closeAnimation
+          )
+        }, ANIMATIONTIME)
       }
-      const colors = [
-        '#eee4db',
-        '#fde0c9',
-        '#f2b179',
-        '#f59563',
-        '#f67c4f',
-        '#f65e3b',
-        '#fdcf72',
-        '#fdcc60',
-        '#fdc850',
-        '#fdc53f',
-        '#fdc22e',
-        '#000000',
-        '#ff0000'
-      ]
-      const shadows = [
-        '',
-        '0 0 30px 10px rgba(243, 215, 116, 0.39683), inset 0 0 0 1px rgba(255, 255, 255, 0.2381)',
-        '0 0 30px 10px rgba(243, 215, 116, 0.47619), inset 0 0 0 1px rgba(255, 255, 255, 0.28571)',
-        '0 0 30px 10px rgba(243, 215, 116, 0.47619), inset 0 0 0 1px rgba(255, 255, 255, 0.32571)',
-        '0px 0px 20px 20px rgba(245, 0, 0, 0.47619), inset 0 0 0 1px rgba(173, 0, 0, 0.4571)',
-        '0px 0px 20px 20px rgba(0, 0, 0, 0.47619), inset 0 0 0 1px rgba(0, 0, 0, 0.4571)'
-      ]
-      if (numberExist[1] >= 8) {
-        fontColor = 'white'
-      }
-      if (numberExist[1] >= 1024) {
-        size = pixToRem(35)
-      }
-      color = [colors[colorNumber]]
-      shadow = shadows[shadowNumber]
-      cellStyles = `background-color: ${color}; box-shadow: ${shadow}; display: ${flex}; color: ${fontColor}; font-size: ${size}; margin: ${margin}`
-
-      this.setState(
-        {
-          value: numberExist[1],
-          animation: animation,
-          cellStyles: cellStyles
-        },
-        this.closeAnimation
-      )
     } else {
-      //first animation then display none
       cellStyles = `display: ${none};`
       this.setState({
-        cellStyles: cellStyles,
-        value: null
+        CellStyles: cellStyles,
+        Value: null
       })
     }
   }
@@ -180,10 +221,11 @@ class Numbers extends React.Component {
     return (
       <Cell
         extend={this.props.extend}
-        cellStyles={this.state.cellStyles}
-        animation={this.state.animation}
+        cellStyles={this.state.CellStyles}
+        animation={this.state.Animation}
+        newPosition={this.state.NewPosition}
       >
-        {this.state.value}
+        {this.state.Value}
       </Cell>
     )
   }

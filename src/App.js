@@ -5,6 +5,7 @@ import Game from './components/game'
 import { connect } from 'react-redux'
 import { move } from './redux/actions'
 import { GODOWN, GOUP, GORIGHT, GOLEFT } from './redux/constants'
+import { ANIMATIONTIME } from './utils/constants'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -32,21 +33,45 @@ const Page = styled.div`
 `
 
 class App extends React.Component {
+  state = {
+    ready: true
+  }
   componentDidMount() {
     window.addEventListener('keydown', this.checkKeyPress)
   }
 
   checkKeyPress = e => {
     e.preventDefault() // scrolling
-    const key = e.key
-    if (key === 'ArrowDown') {
-      this.props.move(GODOWN)
-    } else if (key === 'ArrowUp') {
-      this.props.move(GOUP)
-    } else if (key === 'ArrowLeft') {
-      this.props.move(GOLEFT)
-    } else if (key === 'ArrowRight') {
-      this.props.move(GORIGHT)
+    if (this.state.ready) {
+      let isArrow = false
+      const key = e.key
+      if (key === 'ArrowDown') {
+        this.props.move(GODOWN)
+        isArrow = true
+      } else if (key === 'ArrowUp') {
+        this.props.move(GOUP)
+        isArrow = true
+      } else if (key === 'ArrowLeft') {
+        isArrow = true
+        this.props.move(GOLEFT)
+      } else if (key === 'ArrowRight') {
+        isArrow = true
+        this.props.move(GORIGHT)
+      }
+      if (isArrow) {
+        this.setState(
+          {
+            ready: false
+          },
+          () => {
+            setTimeout(() => {
+              this.setState({
+                ready: true
+              })
+            }, ANIMATIONTIME * 2)
+          }
+        )
+      }
     }
   }
 
