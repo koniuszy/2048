@@ -19,6 +19,9 @@ const GameWindowContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  transition: opacity 2s ease-in;
+
+  ${props => (props.isPlaying ? '' : 'opacity: 0.3;')}
 `
 
 const GameWindow = styled.div`
@@ -295,7 +298,7 @@ class Game extends React.Component {
           onSwipeMove={this.onSwipeMove}
           onSwipeEnd={this.onSwipeEnd}
         >
-          <GameWindowContainer>
+          <GameWindowContainer isPlaying={this.props.isPlaying}>
             <GameWindow fullScreen={this.state.fullScreen} id='GameWindow'>
               <Cells extend={this.state.extend} />
               <Extender viewBox='0 0 438 438' onClick={this.extend}>
@@ -362,7 +365,8 @@ const mapStateToProps = state => {
     numbers: state.Numbers,
     prevNumbers: state.PrevNumbers,
     prevPrevNumbers: state.PrevPrevNumbers,
-    highestNumber: state.HighestNumber
+    highestNumber: state.HighestNumber,
+    isPlaying: state.IsPlaying
   }
 }
 

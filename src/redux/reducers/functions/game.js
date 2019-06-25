@@ -45,18 +45,39 @@ export const getRandomNumberOfArray = emptyCells => {
   return Math.floor(Math.random() * (emptyCells.length - 1))
 }
 
-export const getPrevNumbers = (Numbers, PrevNumbers, PrevPrevNumbers) => {
+export const getPrevNumbers = (
+  Numbers,
+  PrevNumbers,
+  PrevPrevNumbers,
+  newNumbers
+) => {
   let prevNumbers = Numbers
-  if (PrevPrevNumbers.length > 0 && arraysAreEqual(Numbers, PrevNumbers)) {
-    prevNumbers = PrevPrevNumbers
+
+  if (PrevPrevNumbers.length > 0) {
+    if (
+      arraysAreEqual(Numbers, PrevNumbers) ||
+      arraysAreEqual(newNumbers, Numbers)
+    ) {
+      prevNumbers = PrevPrevNumbers
+    }
   }
   return prevNumbers
 }
 
-export const getPrevPrevNumbers = (Numbers, PrevNumbers, PrevPrevNumbers) => {
+export const getPrevPrevNumbers = (
+  Numbers,
+  PrevNumbers,
+  PrevPrevNumbers,
+  newNumbers
+) => {
   let prevPrevNumbers = PrevNumbers
+
   if (PrevPrevNumbers.length > 0) {
-    if (arraysAreEqual(Numbers, PrevNumbers)) {
+    if (
+      arraysAreEqual(Numbers, PrevNumbers) ||
+      arraysAreEqual(PrevNumbers, PrevPrevNumbers) ||
+      arraysAreEqual(newNumbers, Numbers)
+    ) {
       prevPrevNumbers = PrevPrevNumbers
     }
   }
@@ -115,26 +136,44 @@ export const gameOver = Numbers => {
   let isLost = true
   // eslint-disable-next-line
   Numbers.map((number, index) => {
-    if (index > 0 && index < 12) {
-      if (number[1] === Numbers[index + 4]) {
+    if (index > 0 && index < NUMBEROFCELLS - ROW) {
+      if (number[1] === Numbers[index + ROW][1]) {
         isLost = false
       }
     }
 
-    if (index > 4 && index < 16) {
-      if (number[1] === Numbers[index - 4]) {
+    if (index > ROW && index < NUMBEROFCELLS) {
+      if (number[1] === Numbers[index - ROW][1]) {
         isLost = false
       }
     }
 
-    if (index % 4 !== 0 && index !== 0) {
-      if (number[1] === Numbers[index - 1]) {
+    if (index % ROW !== 0 && index !== 0) {
+      if (number[1] === Numbers[index - 1][1]) {
         isLost = false
       }
     }
 
-    if ((index + 1) % 4 !== 0) {
-      if (number[1] === Numbers[index + 1]) {
+    if ((index + 1) % ROW !== 0) {
+      if (number[1] === Numbers[index + 1][1]) {
+        isLost = false
+      }
+    }
+
+    if (index === 0) {
+      if (
+        number[1] === Numbers[index + 1][1] ||
+        number[1] === Numbers[index + ROW][1]
+      ) {
+        isLost = false
+      }
+    }
+
+    if (index === NUMBEROFCELLS - 1) {
+      if (
+        number[1] === Numbers[index - 1][1] ||
+        number[1] === Numbers[index - ROW][1]
+      ) {
         isLost = false
       }
     }

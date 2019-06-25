@@ -20,7 +20,9 @@ const Cell = styled(GlobalCell)`
   text-align: center;
   user-select: none;
   transition: margin ${ANIMATIONTIME}ms ease-in,
-    width ${ANIMATIONTIME}ms ease-in, height ${ANIMATIONTIME}ms ease-in;
+    width ${ANIMATIONTIME}ms ease-in, height ${ANIMATIONTIME}ms ease-in,
+    background-color ${ANIMATIONTIME}ms ease-in,
+    color ${ANIMATIONTIME}ms ease-in;
 
   display: ${props => props.display};
   animation: ${props => props.animation} ${ANIMATIONTIME}ms ease-in;

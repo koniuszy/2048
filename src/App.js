@@ -39,7 +39,7 @@ class App extends React.Component {
   checkKeyPress = e => {
     e.preventDefault()
     const key = e.key
-    if (!e.repeat)
+    if (!e.repeat && this.props.isPlaying)
       if (key === 'ArrowDown') {
         this.props.action(GODOWN)
       } else if (key === 'ArrowUp') {
@@ -61,7 +61,13 @@ class App extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    isPlaying: state.IsPlaying
+  }
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   { action }
 )(App)

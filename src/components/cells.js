@@ -35,7 +35,8 @@ class Cells extends Component {
   componentDidMount() {
     if (
       localStorage.getItem('persist:numbers') === null ||
-      typeof localStorage.getItem(`persist:numbers`) === 'undefined'
+      typeof localStorage.getItem('persist:numbers') === 'undefined' ||
+      this.props.highestNumber === 4
     ) {
       this.props.action(NEWGAME)
     }
@@ -59,7 +60,13 @@ class Cells extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    highestNumber: state.HighestNumber
+  }
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   { action }
 )(Cells)

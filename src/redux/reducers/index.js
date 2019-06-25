@@ -22,22 +22,20 @@ const initialStates = {
   PrevPrevNumbers: [],
   Animation: '',
   AmountOfUnDos: 3,
-  HighestNumber: 4
+  HighestNumber: 4,
+  IsPlaying: true
 }
 
 const reducer = (state = initialStates, action) => {
+  let isPlaying = true
   const randomValue = getRandomValue()
   const { Numbers, PrevNumbers, PrevPrevNumbers, HighestNumber } = state
-  let prevNumbers = getPrevNumbers(Numbers, PrevNumbers, PrevPrevNumbers)
-  let prevPrevNumbers = getPrevPrevNumbers(
-    Numbers,
-    PrevNumbers,
-    PrevPrevNumbers
-  )
   let newNumbers = []
   let PositionOfNextCell
-  let newScore
+  let newScore = state.HighestNumber
   let animations
+  let prevNumbers
+  let prevPrevNumbers
 
   switch (action.type) {
     case NEWGAME:
@@ -58,6 +56,7 @@ const reducer = (state = initialStates, action) => {
       }
       return {
         ...state,
+        IsPlaying: true,
         PrevNumbers: newNumbers,
         PrevPrevNumbers: [],
         Numbers: newNumbers,
@@ -68,9 +67,31 @@ const reducer = (state = initialStates, action) => {
       sort(Numbers, true)
       PositionOfNextCell = 4
       newNumbers = move(Numbers, firstRowDown, PositionOfNextCell)
-      newScore = getScore(newNumbers, HighestNumber)
+      if (newNumbers) {
+        newScore = getScore(newNumbers, HighestNumber)
+      } else {
+        newNumbers = Numbers
+        isPlaying = false
+        prevNumbers = state.PrevNumbers
+        prevPrevNumbers = state.PrevPrevNumbers
+      }
+
+      prevNumbers = getPrevNumbers(
+        Numbers,
+        PrevNumbers,
+        PrevPrevNumbers,
+        newNumbers
+      )
+      prevPrevNumbers = getPrevPrevNumbers(
+        Numbers,
+        PrevNumbers,
+        PrevPrevNumbers,
+        newNumbers
+      )
+
       return {
         ...state,
+        IsPlaying: isPlaying,
         Numbers: newNumbers,
         PrevNumbers: prevNumbers,
         PrevPrevNumbers: prevPrevNumbers,
@@ -82,9 +103,30 @@ const reducer = (state = initialStates, action) => {
       sort(Numbers)
       PositionOfNextCell = -4
       newNumbers = move(Numbers, firstRowUp, PositionOfNextCell)
-      newScore = getScore(newNumbers, HighestNumber)
+      if (newNumbers) {
+        newScore = getScore(newNumbers, HighestNumber)
+        prevNumbers = getPrevNumbers(
+          Numbers,
+          PrevNumbers,
+          PrevPrevNumbers,
+          newNumbers
+        )
+        prevPrevNumbers = getPrevPrevNumbers(
+          Numbers,
+          PrevNumbers,
+          PrevPrevNumbers,
+          newNumbers
+        )
+      } else {
+        newNumbers = Numbers
+        isPlaying = false
+        prevNumbers = state.PrevNumbers
+        prevPrevNumbers = state.PrevPrevNumbers
+      }
+
       return {
         ...state,
+        IsPlaying: isPlaying,
         Numbers: newNumbers,
         PrevNumbers: prevNumbers,
         PrevPrevNumbers: prevPrevNumbers,
@@ -95,9 +137,30 @@ const reducer = (state = initialStates, action) => {
       sort(Numbers, true)
       PositionOfNextCell = 1
       newNumbers = move(Numbers, firstRowRight, PositionOfNextCell)
-      newScore = getScore(newNumbers, HighestNumber)
+      if (newNumbers) {
+        newScore = getScore(newNumbers, HighestNumber)
+        prevNumbers = getPrevNumbers(
+          Numbers,
+          PrevNumbers,
+          PrevPrevNumbers,
+          newNumbers
+        )
+        prevPrevNumbers = getPrevPrevNumbers(
+          Numbers,
+          PrevNumbers,
+          PrevPrevNumbers,
+          newNumbers
+        )
+      } else {
+        newNumbers = Numbers
+        isPlaying = false
+        prevNumbers = state.PrevNumbers
+        prevPrevNumbers = state.PrevPrevNumbers
+      }
+
       return {
         ...state,
+        IsPlaying: isPlaying,
         Numbers: newNumbers,
         PrevNumbers: prevNumbers,
         PrevPrevNumbers: prevPrevNumbers,
@@ -108,9 +171,30 @@ const reducer = (state = initialStates, action) => {
       sort(Numbers)
       PositionOfNextCell = -1
       newNumbers = move(Numbers, firstRowLeft, PositionOfNextCell)
-      newScore = getScore(newNumbers, HighestNumber)
+      if (newNumbers) {
+        newScore = getScore(newNumbers, HighestNumber)
+        prevNumbers = getPrevNumbers(
+          Numbers,
+          PrevNumbers,
+          PrevPrevNumbers,
+          newNumbers
+        )
+        prevPrevNumbers = getPrevPrevNumbers(
+          Numbers,
+          PrevNumbers,
+          PrevPrevNumbers,
+          newNumbers
+        )
+      } else {
+        newNumbers = Numbers
+        isPlaying = false
+        prevNumbers = state.PrevNumbers
+        prevPrevNumbers = state.PrevPrevNumbers
+      }
+
       return {
         ...state,
+        IsPlaying: isPlaying,
         Numbers: newNumbers,
         PrevNumbers: prevNumbers,
         PrevPrevNumbers: prevPrevNumbers,
@@ -118,6 +202,7 @@ const reducer = (state = initialStates, action) => {
       }
 
     case UNDO:
+      isPlaying = true
       let amountsOfUnDos = state.AmountOfUnDos - 1
       let newNumbersAfterUndo = state.Numbers
       if (amountsOfUnDos >= 0) {
@@ -128,6 +213,8 @@ const reducer = (state = initialStates, action) => {
       }
       return {
         ...state,
+        NewNumbers: newNumbersAfterUndo,
+        IsPlaying: isPlaying,
         Numbers: newNumbersAfterUndo,
         AmountOfUnDos: amountsOfUnDos,
         PrevPrevNumbers: []

@@ -91,7 +91,7 @@ export const move = (Numbers, positionCanMove, PositionOfNextCell) => {
     newNumber.push(position, value, NEWGAME)
     newNumbers.push(newNumber)
   } else if (emptyCells.length === 0 && gameOver(Numbers)) {
-    console.log('you lost')
+    newNumbers = false
   }
   return newNumbers
 }
