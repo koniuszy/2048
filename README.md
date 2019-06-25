@@ -1,4 +1,4 @@
-# 2048
+# 4096
 
 ## Visit https://game4096.herokuapp.com to play!
 
