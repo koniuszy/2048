@@ -62,7 +62,6 @@ export const move = (prevNumbers, positionCanMove, PositionOfNextCell) => {
               value = newNumbers[i][1] * 2
               newNumbers[i][1] = value
               newNumbers[i][3] = MERGE
-              console.log(position, newNumbers[i][0])
               positionForAnimation = getPositionForAnimation(
                 newNumbers[i][0],
                 position
@@ -73,7 +72,6 @@ export const move = (prevNumbers, positionCanMove, PositionOfNextCell) => {
                 positionForAnimation,
                 WILLMERGE
               )
-              console.log(newNumbers[i], numberWillMerge)
               newNumbers.push(numberWillMerge)
               positionsOfMergedNumbers.push(newNumbers[i][0])
               i = newNumbers.length + 1

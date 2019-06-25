@@ -72,27 +72,42 @@ class Numbers extends React.Component {
     if (this.state.NewPosition !== nextState.NewPosition) {
       shouldUpdate = true
     }
+
+    if (this.state.Value !== null && nextState.Value === null) {
+      shouldUpdate = true
+    }
     return shouldUpdate
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (
       this.props.numbers !== null &&
       prevProps.numbers !== this.props.numbers
     ) {
       this.fillCells()
-    } else {
-      // console.log(prevState)
+    } else if (this.state.Value !== null) {
+      let numberWillStay = false
+      this.props.numbers.map(number => {
+        if (number[0] === this.props.position) {
+          numberWillStay = true
+        }
+      })
+
+      if (!numberWillStay) {
+        this.setState({
+          Value: null,
+          CellStyles: 'display: none;'
+        })
+      }
     }
   }
 
-  startRelocateNumber = (pos, val, move, type, initialPosition) => {
-    console.log(pos, val, move, type, initialPosition)
-    let position = 'left: 0; top: 0;'
-    if (type === WILLMERGE) {
-      position = move
-    }
+  startRelocateNumber = (move, type) => {
     setTimeout(() => {
+      let position = 'left: 0; top: 0;'
+      if (type === WILLMERGE) {
+        position = move
+      }
       this.setState({
         NewPosition: position
       })
@@ -138,6 +153,7 @@ class Numbers extends React.Component {
         value = value / 2
         zIndex = 5
       } else if (numberExist[3] === WILLMERGE) {
+        console.log(numberExist)
         initialPosition = 'left: 0; top: 0;'
       } else if (numberExist[2]) {
         initialPosition = numberExist[2]
@@ -148,29 +164,28 @@ class Numbers extends React.Component {
       let size = getFontSize(value)
       let fontColor = getFontColor(value)
 
-      cellStyles = `z-index: ${zIndex}; background-color: ${color}; box-shadow: ${shadow}; display: ${display}; color: ${fontColor}; font-size: ${size}; ${initialPosition}`
-
-      if (animation !== create)
+      if (animation !== create) {
         this.setState(
           {
-            NewPosition: '', //tctd
-            Value: value,
-            CellStyles: cellStyles
+            NewPosition: ''
           },
-          () =>
-            this.startRelocateNumber(
-              numberExist[0],
-              numberExist[1],
-              numberExist[2],
-              numberExist[3],
-              initialPosition
+          () => {
+            cellStyles = `z-index: ${zIndex}; background-color: ${color}; box-shadow: ${shadow}; display: ${display}; color: ${fontColor}; font-size: ${size}; ${initialPosition}`
+            this.setState(
+              {
+                Value: value,
+                CellStyles: cellStyles
+              },
+              () => this.startRelocateNumber(numberExist[2], numberExist[3])
             )
+          }
         )
+      }
 
       if (numberExist[3] === WILLMERGE) {
-        display = none
-        cellStyles = `display: ${display};`
         setTimeout(() => {
+          display = none
+          cellStyles = `display: ${display};`
           this.setState({
             CellStyles: cellStyles,
             Value: null
@@ -179,27 +194,26 @@ class Numbers extends React.Component {
       }
 
       if (numberExist[3] === MERGE || numberExist[2] === NEWGAME) {
-        if (animation === create) {
+        if (numberExist[2] === NEWGAME) {
           display = none
           cellStyles = `display: ${display};`
           this.setState({
             CellStyles: cellStyles
           })
         }
-        if (animation === merge) {
-          value = value * 2
-          initialPosition = ''
-          color = getColor(value)
-          shadow = getShadow(value)
-          size = getFontSize(value)
-          fontColor = getFontColor(value)
-        }
-        display = flex
-        cellStyles = `z-index: ${zIndex}; background-color: ${color}; box-shadow: ${shadow}; display: ${display}; color: ${fontColor}; font-size: ${size}; ${initialPosition}`
         setTimeout(() => {
+          if (numberExist[3] === MERGE) {
+            value = value * 2
+            color = getColor(value)
+            shadow = getShadow(value)
+            size = getFontSize(value)
+            fontColor = getFontColor(value)
+          }
+          display = flex
+          cellStyles = `z-index: ${zIndex}; background-color: ${color}; box-shadow: ${shadow}; display: ${display}; color: ${fontColor}; font-size: ${size}; ${initialPosition}`
+
           this.setState(
             {
-              NewPosition: '',
               CellStyles: cellStyles,
               Animation: animation,
               Value: value
