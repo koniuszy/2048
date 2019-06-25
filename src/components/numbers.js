@@ -147,13 +147,13 @@ class Numbers extends React.Component {
       if (numberExist[2] === NEWGAME) {
         animation = create
         display = none
+        console.log(initialPosition)
       } else if (numberExist[3] === MERGE) {
         animation = merge
         initialPosition = numberExist[2]
         value = value / 2
         zIndex = 5
       } else if (numberExist[3] === WILLMERGE) {
-        console.log(numberExist)
         initialPosition = 'left: 0; top: 0;'
       } else if (numberExist[2]) {
         initialPosition = numberExist[2]
@@ -164,7 +164,7 @@ class Numbers extends React.Component {
       let size = getFontSize(value)
       let fontColor = getFontColor(value)
 
-      if (animation !== create) {
+      if (numberExist[2] !== NEWGAME) {
         this.setState(
           {
             NewPosition: ''
@@ -198,7 +198,8 @@ class Numbers extends React.Component {
           display = none
           cellStyles = `display: ${display};`
           this.setState({
-            CellStyles: cellStyles
+            CellStyles: cellStyles,
+            NewPosition: ''
           })
         }
         setTimeout(() => {
