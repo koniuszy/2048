@@ -1,4 +1,4 @@
-import { NUMBEROFCELLS } from '../../../utils/numberOfCells'
+import { NUMBEROFCELLS } from '../../../utils/constants'
 
 export const getFullCells = Numbers => {
   let fullCells = []

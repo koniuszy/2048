@@ -3,7 +3,7 @@ import styled, { createGlobalStyle } from 'styled-components'
 
 import Game from './components/game'
 import { connect } from 'react-redux'
-import { move } from './redux/actions'
+import { action } from './redux/actions'
 import { GODOWN, GOUP, GORIGHT, GOLEFT } from './redux/constants'
 
 const GlobalStyle = createGlobalStyle`
@@ -37,17 +37,18 @@ class App extends React.Component {
   }
 
   checkKeyPress = e => {
-    e.preventDefault() // scrolling
+    e.preventDefault()
     const key = e.key
-    if (key === 'ArrowDown') {
-      this.props.move(GODOWN)
-    } else if (key === 'ArrowUp') {
-      this.props.move(GOUP)
-    } else if (key === 'ArrowLeft') {
-      this.props.move(GOLEFT)
-    } else if (key === 'ArrowRight') {
-      this.props.move(GORIGHT)
-    }
+    if (!e.repeat)
+      if (key === 'ArrowDown') {
+        this.props.action(GODOWN)
+      } else if (key === 'ArrowUp') {
+        this.props.action(GOUP)
+      } else if (key === 'ArrowLeft') {
+        this.props.action(GOLEFT)
+      } else if (key === 'ArrowRight') {
+        this.props.action(GORIGHT)
+      }
   }
 
   render() {
@@ -62,5 +63,5 @@ class App extends React.Component {
 
 export default connect(
   null,
-  { move }
+  { action }
 )(App)

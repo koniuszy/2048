@@ -6,8 +6,8 @@ import Swipe from 'react-easy-swipe'
 import styled, { css } from 'styled-components'
 
 import { connect } from 'react-redux'
-import { newGame, move } from '../redux/actions'
-import { UNDO } from '../redux/constants'
+import { action } from '../redux/actions'
+import { UNDO, NEWGAME } from '../redux/constants'
 import { GOUP, GODOWN, GOLEFT, GORIGHT } from '../redux/constants'
 import { ANIMATIONTIME, EXTENDEDCONTAINER } from '../utils/constants'
 
@@ -200,13 +200,9 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
-    document.getElementById('GameWindow').addEventListener(
-      'touchmove',
-      function(e) {
-        e.preventDefault()
-      },
-      { passive: false }
-    )
+    document.getElementById('GameWindow').addEventListener('touchmove', e => {
+      e.preventDefault()
+    })
   }
 
   onSwipeMove = position => {
@@ -243,7 +239,7 @@ class Game extends React.Component {
         direction = GOUP
       }
     }
-    this.props.move(direction)
+    this.props.action(direction)
   }
 
   disableButton = () => {
@@ -325,11 +321,11 @@ class Game extends React.Component {
           <Button
             styles={this.getButtonStyles()}
             disabled={this.disableButton()}
-            onClick={() => this.props.move(UNDO)}
+            onClick={() => this.props.action(UNDO)}
           >
             Undo: {this.props.undo}
           </Button>
-          <Button onClick={() => this.props.newGame(2)}>New Game</Button>
+          <Button onClick={() => this.props.action(NEWGAME)}>New Game</Button>
         </ButtonsWrapper>
         <Wrapper>
           <HowToPlay>
@@ -362,15 +358,15 @@ class Game extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    undo: state.game.AmountOfUnDos,
-    numbers: state.game.Numbers,
-    prevNumbers: state.game.PrevNumbers,
-    prevPrevNumbers: state.game.PrevPrevNumbers,
-    highestNumber: state.game.HighestNumber
+    undo: state.AmountOfUnDos,
+    numbers: state.Numbers,
+    prevNumbers: state.PrevNumbers,
+    prevPrevNumbers: state.PrevPrevNumbers,
+    highestNumber: state.HighestNumber
   }
 }
 
 export default connect(
   mapStateToProps,
-  { newGame, move }
+  { action }
 )(Game)

@@ -5,7 +5,7 @@ import {
   getRandomNumberOfArray,
   getRandomValue
 } from './game'
-import { ROW } from '../../../utils/numberOfCells'
+import { ROW } from '../../../utils/constants'
 import { NEWGAME, MERGE } from '../../constants'
 
 export const move = (Numbers, positionCanMove, PositionOfNextCell) => {
@@ -50,13 +50,11 @@ export const move = (Numbers, positionCanMove, PositionOfNextCell) => {
               mergedAlready = true
             }
             if (!mergedAlready) {
-              console.log(newNumbers[i])
               shouldMerge = true
               value = newNumbers[i][1] * 2
               newNumbers[i][1] = value
               newNumbers[i][2] = MERGE
               positionsOfMergedNumbers.push(newNumbers[i][0])
-              console.log(newNumbers[i])
               i = newNumbers.length + 1
             }
           }
@@ -88,9 +86,7 @@ export const move = (Numbers, positionCanMove, PositionOfNextCell) => {
     value = getRandomValue()
 
     newNumber = []
-    newNumber.push(position)
-    newNumber.push(value)
-    newNumber.push(NEWGAME)
+    newNumber.push(position, value, NEWGAME)
     newNumbers.push(newNumber)
   }
   return newNumbers

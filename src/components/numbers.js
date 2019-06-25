@@ -8,6 +8,12 @@ import { GlobalCell } from '../utils/globalCell'
 import { connect } from 'react-redux'
 import { NEWGAME, MERGE } from '../redux/constants'
 import { create, merge } from './animations/numbers'
+import {
+  getColor,
+  getShadow,
+  getFontColor,
+  getFontSize
+} from './functions/numberStyle'
 
 const Cell = styled(GlobalCell)`
   justify-content: center;
@@ -34,9 +40,9 @@ const Cell = styled(GlobalCell)`
 
 class Numbers extends React.Component {
   state = {
-    value: null,
-    animation: 'none',
-    cellStyles: ''
+    Value: null,
+    Animation: 'none',
+    CellStyles: ''
   }
   componentDidMount() {
     if (localStorage.getItem('persist:numbers') !== null) {
@@ -50,7 +56,7 @@ class Numbers extends React.Component {
     nextProps.numbers.map(number => {
       if (
         number[0] === this.props.position &&
-        number[1] === this.state.value &&
+        number[1] === this.state.Value &&
         number[2] !== NEWGAME &&
         number[2] !== MERGE &&
         nextProps.extend === this.props.extend
@@ -73,7 +79,7 @@ class Numbers extends React.Component {
   closeAnimation = () => {
     setTimeout(() => {
       this.setState({
-        animation: 'none'
+        Animation: 'none'
       })
     }, ANIMATIONTIME)
   }
@@ -96,82 +102,33 @@ class Numbers extends React.Component {
 
     // eslint-disable-next-line
     if (numberExist) {
-      let fontColor = 'black'
-      let shadow = 'none'
-      let size = pixToRem(48)
-      let color
-      let margin = '0 0 0 0'
-
       if (numberExist[2] === NEWGAME) {
         animation = create
       } else if (numberExist[2] === MERGE) {
         animation = merge
-      } else {
-        margin = numberExist[2]
       }
 
-      let colorNumber = 0
-      let shadowNumber = 0
-      let numberValue = numberExist[1]
+      let value = numberExist[1]
+      let color = getColor(value)
+      let shadow = getShadow(value)
+      let size = getFontSize(value)
+      let fontColor = getFontColor(value)
 
-      while (numberValue > 2) {
-        numberValue = numberValue / 2
-        if (colorNumber <= 12) {
-          colorNumber++
-        } else {
-          numberValue = 1
-        }
-        if (colorNumber >= 8) {
-          shadowNumber++
-        }
-      }
-      const colors = [
-        '#eee4db',
-        '#fde0c9',
-        '#f2b179',
-        '#f59563',
-        '#f67c4f',
-        '#f65e3b',
-        '#fdcf72',
-        '#fdcc60',
-        '#fdc850',
-        '#fdc53f',
-        '#fdc22e',
-        '#000000',
-        '#ff0000'
-      ]
-      const shadows = [
-        '',
-        '0 0 30px 10px rgba(243, 215, 116, 0.39683), inset 0 0 0 1px rgba(255, 255, 255, 0.2381)',
-        '0 0 30px 10px rgba(243, 215, 116, 0.47619), inset 0 0 0 1px rgba(255, 255, 255, 0.28571)',
-        '0 0 30px 10px rgba(243, 215, 116, 0.47619), inset 0 0 0 1px rgba(255, 255, 255, 0.32571)',
-        '0px 0px 20px 20px rgba(245, 0, 0, 0.47619), inset 0 0 0 1px rgba(173, 0, 0, 0.4571)',
-        '0px 0px 20px 20px rgba(0, 0, 0, 0.47619), inset 0 0 0 1px rgba(0, 0, 0, 0.4571)'
-      ]
-      if (numberExist[1] >= 8) {
-        fontColor = 'white'
-      }
-      if (numberExist[1] >= 1024) {
-        size = pixToRem(35)
-      }
-      color = [colors[colorNumber]]
-      shadow = shadows[shadowNumber]
-      cellStyles = `background-color: ${color}; box-shadow: ${shadow}; display: ${flex}; color: ${fontColor}; font-size: ${size}; margin: ${margin}`
+      cellStyles = `background-color: ${color}; box-shadow: ${shadow}; display: ${flex}; color: ${fontColor}; font-size: ${size};`
 
       this.setState(
         {
-          value: numberExist[1],
-          animation: animation,
-          cellStyles: cellStyles
+          Value: value,
+          Animation: animation,
+          CellStyles: cellStyles
         },
         this.closeAnimation
       )
     } else {
-      //first animation then display none
       cellStyles = `display: ${none};`
       this.setState({
-        cellStyles: cellStyles,
-        value: null
+        CellStyles: cellStyles,
+        Value: null
       })
     }
   }
@@ -180,10 +137,10 @@ class Numbers extends React.Component {
     return (
       <Cell
         extend={this.props.extend}
-        cellStyles={this.state.cellStyles}
-        animation={this.state.animation}
+        cellStyles={this.state.CellStyles}
+        animation={this.state.Animation}
       >
-        {this.state.value}
+        {this.state.Value}
       </Cell>
     )
   }
@@ -191,7 +148,7 @@ class Numbers extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    numbers: state.game.Numbers
+    numbers: state.Numbers
   }
 }
 

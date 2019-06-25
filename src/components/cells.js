@@ -3,11 +3,11 @@ import styled from 'styled-components'
 import Numbers from './numbers'
 import media from '../media-query/media'
 
-import { ANIMATIONTIME, EXTEND } from '../utils/constants'
+import { ANIMATIONTIME, EXTEND, NUMBEROFCELLS } from '../utils/constants'
 import { GlobalCell } from '../utils/globalCell'
 import { connect } from 'react-redux'
-import { newGame, move } from '../redux/actions'
-import { NUMBEROFCELLS } from '../utils/numberOfCells'
+import { NEWGAME } from '../redux/constants'
+import { action } from '../redux/actions'
 
 const CellWrapper = styled.div`
   display: flex;
@@ -35,8 +35,11 @@ const CellShadow = styled(GlobalCell)`
 
 class Cells extends Component {
   componentDidMount() {
-    if (localStorage.getItem('persist:numbers') === null) {
-      this.props.newGame(2)
+    if (
+      localStorage.getItem('persist:numbers') === null ||
+      typeof localStorage.getItem(`persist:numbers`) === 'undefined'
+    ) {
+      this.props.action(NEWGAME)
     }
   }
   makeCellsShadow = () => {
@@ -60,5 +63,5 @@ class Cells extends Component {
 
 export default connect(
   null,
-  { newGame, move }
+  { action }
 )(Cells)

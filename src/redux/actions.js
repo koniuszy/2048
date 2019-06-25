@@ -1,15 +1,4 @@
-import { NEWGAME } from './constants'
-
-export const newGame = amount => {
-  return {
-    type: NEWGAME,
-    payload: {
-      amount
-    }
-  }
-}
-
-export const move = type => {
+export const action = type => {
   return {
     type: type
   }
