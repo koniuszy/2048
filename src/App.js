@@ -5,6 +5,7 @@ import Game from './components/game'
 import { connect } from 'react-redux'
 import { action } from './redux/actions'
 import { GODOWN, GOUP, GORIGHT, GOLEFT } from './redux/constants'
+import { media } from './media-query/media'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -29,6 +30,10 @@ const Page = styled.div`
   max-width: 100vw;
   min-height: 100vh;
   min-height: calc(var(--vh, 1vh) * 100);
+
+  ${media.lessThan('small')`
+    user-select: none;
+  `};
 `
 
 class App extends React.Component {
