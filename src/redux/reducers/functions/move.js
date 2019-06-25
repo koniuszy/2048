@@ -3,7 +3,8 @@ import {
   arraysAreEqual,
   getEmptyCells,
   getRandomNumberOfArray,
-  getRandomValue
+  getRandomValue,
+  gameOver
 } from './game'
 import { ROW } from '../../../utils/constants'
 import { NEWGAME, MERGE } from '../../constants'
@@ -12,7 +13,7 @@ export const move = (Numbers, positionCanMove, PositionOfNextCell) => {
   let fullCells = getFullCells(Numbers)
   let shouldMerge = false
   let mergedAlready = false
-  let emptyCells = []
+  let emptyCells = getEmptyCells(fullCells)
   let newNumber = []
   let newNumbers = []
   let positionsOfMergedNumbers = []
@@ -59,16 +60,17 @@ export const move = (Numbers, positionCanMove, PositionOfNextCell) => {
             }
           }
         }
-        //move
+        //move and do not merge
         if (!shouldMerge) {
           position = positionOfNextNumber - PositionOfNextCell
         }
       } else if (!positionOfNextNumber) {
+        // move to the very end
         while (positionCanMove(position)) {
           position = position + PositionOfNextCell
         }
       }
-    } // number remain the same
+    } // number remain the same, position cannot move
     if (!shouldMerge) {
       newNumber.push(position)
       newNumber.push(value)
@@ -79,7 +81,7 @@ export const move = (Numbers, positionCanMove, PositionOfNextCell) => {
     fullCells = getFullCells(newNumbers)
   }
 
-  // create new Number
+  // create new random Number
   if (!arraysAreEqual(newNumbers, Numbers)) {
     emptyCells = getEmptyCells(fullCells)
     position = emptyCells[getRandomNumberOfArray(emptyCells)]
@@ -88,6 +90,8 @@ export const move = (Numbers, positionCanMove, PositionOfNextCell) => {
     newNumber = []
     newNumber.push(position, value, NEWGAME)
     newNumbers.push(newNumber)
+  } else if (emptyCells.length === 0 && gameOver(Numbers)) {
+    console.log('you lost')
   }
   return newNumbers
 }

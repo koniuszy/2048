@@ -1,9 +1,5 @@
 import { NEWGAME, GODOWN, GOUP, GOLEFT, GORIGHT, UNDO } from '../constants'
-import {
-  NUMBEROFCELLS,
-  ROW,
-  AMOUNTOFNEWGAMENUMBERS
-} from '../../utils/constants'
+import { AMOUNTOFNEWGAMENUMBERS } from '../../utils/constants'
 import { move } from './functions/move'
 import {
   getEmptyCells,
@@ -13,7 +9,11 @@ import {
   getPrevPrevNumbers,
   arraysAreEqual,
   getScore,
-  sort
+  sort,
+  firstRowLeft,
+  firstRowRight,
+  firstRowDown,
+  firstRowUp
 } from './functions/game'
 
 const initialStates = {
@@ -66,9 +66,6 @@ const reducer = (state = initialStates, action) => {
 
     case GODOWN:
       sort(Numbers, true)
-      const firstRowDown = position => {
-        return position < NUMBEROFCELLS - ROW
-      }
       PositionOfNextCell = 4
       newNumbers = move(Numbers, firstRowDown, PositionOfNextCell)
       newScore = getScore(newNumbers, HighestNumber)
@@ -83,9 +80,6 @@ const reducer = (state = initialStates, action) => {
 
     case GOUP:
       sort(Numbers)
-      const firstRowUp = position => {
-        return position >= ROW
-      }
       PositionOfNextCell = -4
       newNumbers = move(Numbers, firstRowUp, PositionOfNextCell)
       newScore = getScore(newNumbers, HighestNumber)
@@ -99,12 +93,6 @@ const reducer = (state = initialStates, action) => {
 
     case GORIGHT:
       sort(Numbers, true)
-      const firstRowRight = position => {
-        if (position === NUMBEROFCELLS - 1) {
-          return false
-        }
-        return !((position + 1) % 4 === 0)
-      }
       PositionOfNextCell = 1
       newNumbers = move(Numbers, firstRowRight, PositionOfNextCell)
       newScore = getScore(newNumbers, HighestNumber)
@@ -118,12 +106,6 @@ const reducer = (state = initialStates, action) => {
 
     case GOLEFT:
       sort(Numbers)
-      const firstRowLeft = position => {
-        if (position === 0) {
-          return false
-        }
-        return !(position % 4 === 0)
-      }
       PositionOfNextCell = -1
       newNumbers = move(Numbers, firstRowLeft, PositionOfNextCell)
       newScore = getScore(newNumbers, HighestNumber)

@@ -19,8 +19,6 @@ const CellShadow = styled(GlobalCell)`
   background: rgba(238, 228, 218, 0.35);
   position: relative;
   display: flex;
-  justify-content: center;
-  align-items: center;
   transition: width ${ANIMATIONTIME}ms ease-in,
     height ${ANIMATIONTIME}ms ease-in;
 

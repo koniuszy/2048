@@ -16,8 +16,6 @@ import {
 } from './functions/numberStyle'
 
 const Cell = styled(GlobalCell)`
-  justify-content: center;
-  align-items: center;
   font-weight: 700;
   text-align: center;
   user-select: none;
@@ -44,6 +42,7 @@ class Numbers extends React.Component {
     Animation: 'none',
     CellStyles: ''
   }
+
   componentDidMount() {
     if (localStorage.getItem('persist:numbers') !== null) {
       this.fillCells()
@@ -52,9 +51,11 @@ class Numbers extends React.Component {
 
   shouldComponentUpdate(nextProps) {
     let shouldUpdate = true
+
     // eslint-disable-next-line
     nextProps.numbers.map(number => {
       if (
+        // if there is the same number (the same position value and animation), then we do not need to update
         number[0] === this.props.position &&
         number[1] === this.state.Value &&
         number[2] !== NEWGAME &&
@@ -123,6 +124,7 @@ class Numbers extends React.Component {
           CellStyles: cellStyles
         },
         this.closeAnimation
+        // when Cell receive the same animation it wont play
       )
     } else {
       cellStyles = `display: ${none};`
