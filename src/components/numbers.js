@@ -51,9 +51,8 @@ class Numbers extends React.Component {
 
   shouldComponentUpdate(nextProps) {
     let shouldUpdate = true
-
     // eslint-disable-next-line
-    nextProps.numbers.map(number => {
+    nextProps.numbers.forEach(number => {
       if (
         // if there is the same number (the same position value and animation), then we do not need to update
         number[0] === this.props.position &&
@@ -65,6 +64,7 @@ class Numbers extends React.Component {
         shouldUpdate = false
       }
     })
+
     return shouldUpdate
   }
 
