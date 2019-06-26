@@ -1,11 +1,11 @@
-# 2048
+# 4096
 
 ## Visit https://game4096.herokuapp.com to play!
 
 ### Download
 
 ```
-git clone git@github.com:koniuszy/2048.git
+git clone git@github.com:koniuszy/4096.git
 ```
 
 ```
