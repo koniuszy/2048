@@ -40,7 +40,7 @@ export const move = (Numbers, positionCanMove, PositionOfNextCell) => {
       }
 
       // MERGE
-      if (positionOfNextNumber !== false) {
+      if (positionOfNextNumber) {
         for (let i = 0; i < newNumbers.length; i++) {
           if (
             newNumbers[i][0] === positionOfNextNumber &&

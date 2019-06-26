@@ -5,7 +5,7 @@ import Game from './components/game'
 import { connect } from 'react-redux'
 import { action } from './redux/actions'
 import { GODOWN, GOUP, GORIGHT, GOLEFT } from './redux/constants'
-import { media } from './media-query/media'
+import media from './media-query/media'
 
 const GlobalStyle = createGlobalStyle`
   body {
