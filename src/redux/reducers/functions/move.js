@@ -40,11 +40,11 @@ export const move = (Numbers, positionCanMove, PositionOfNextCell) => {
       }
 
       // MERGE
-      if (positionOfNextNumber) {
-        for (let q = 0; q < newNumbers.length; q++) {
+      if (positionOfNextNumber !== false) {
+        for (let i = 0; i < newNumbers.length; i++) {
           if (
-            newNumbers[q][0] === positionOfNextNumber &&
-            newNumbers[q][1] === value
+            newNumbers[i][0] === positionOfNextNumber &&
+            newNumbers[i][1] === value
           ) {
             // it cannot be marged twice => [2] [2] [4] [8] (to left) should get [4] [4] [8] []
             if (positionsOfMergedNumbers.includes(positionOfNextNumber)) {
@@ -52,11 +52,11 @@ export const move = (Numbers, positionCanMove, PositionOfNextCell) => {
             }
             if (!mergedAlready) {
               shouldMerge = true
-              value = newNumbers[q][1] * 2
-              newNumbers[q][1] = value
-              newNumbers[q][2] = MERGE
-              positionsOfMergedNumbers.push(newNumbers[q][0])
-              q = newNumbers.length + 1
+              value = newNumbers[i][1] * 2
+              newNumbers[i][1] = value
+              newNumbers[i][2] = MERGE
+              positionsOfMergedNumbers.push(newNumbers[i][0])
+              i = newNumbers.length + 1
             }
           }
         }
@@ -72,7 +72,8 @@ export const move = (Numbers, positionCanMove, PositionOfNextCell) => {
       }
     } // number remain the same, position cannot move
     if (!shouldMerge) {
-      newNumber.push(position, value)
+      newNumber.push(position)
+      newNumber.push(value)
       newNumbers.push(newNumber)
     }
     mergedAlready = false
