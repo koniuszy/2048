@@ -7,9 +7,10 @@ context('Connectors', () => {
 
   it('.each() - iterate over an array of elements', () => {
     // https://on.cypress.io/each
-    cy.get('.connectors-each-ul>li').each(($el, index, $list) => {
-      console.log($el, index, $list)
-    })
+    cy.get('.connectors-each-ul>li')
+      .each(($el, index, $list) => {
+        console.log($el, index, $list)
+      })
   })
 
   it('.its() - get properties on the current subject', () => {
@@ -25,8 +26,7 @@ context('Connectors', () => {
     // $('.connectors-div').hide()
 
     // https://on.cypress.io/invoke
-    cy.get('.connectors-div')
-      .should('be.hidden')
+    cy.get('.connectors-div').should('be.hidden')
       // call the jquery method 'show' on the 'div.container'
       .invoke('show')
       .should('be.visible')
@@ -45,11 +45,12 @@ context('Connectors', () => {
 
   it('.then() - invoke a callback function with the current subject', () => {
     // https://on.cypress.io/then
-    cy.get('.connectors-list > li').then($lis => {
-      expect($lis, '3 items').to.have.length(3)
-      expect($lis.eq(0), 'first item').to.contain('Walk the dog')
-      expect($lis.eq(1), 'second item').to.contain('Feed the cat')
-      expect($lis.eq(2), 'third item').to.contain('Write JavaScript')
-    })
+    cy.get('.connectors-list > li')
+      .then(($lis) => {
+        expect($lis, '3 items').to.have.length(3)
+        expect($lis.eq(0), 'first item').to.contain('Walk the dog')
+        expect($lis.eq(1), 'second item').to.contain('Feed the cat')
+        expect($lis.eq(2), 'third item').to.contain('Write JavaScript')
+      })
   })
 })

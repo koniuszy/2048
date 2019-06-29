@@ -95,14 +95,12 @@ class Numbers extends React.Component {
     let animation = none
     let cellStyles
 
-    // eslint-disable-next-line
-    numbers.map(number => {
+    numbers.forEach(number => {
       if (number[0] === position) {
         numberExist = number
       }
     })
 
-    // eslint-disable-next-line
     if (numberExist) {
       if (numberExist[2] === NEWGAME) {
         animation = create

@@ -20,7 +20,6 @@ const initialStates = {
   Numbers: [],
   PrevNumbers: [],
   PrevPrevNumbers: [],
-  Animation: '',
   AmountOfUnDos: 3,
   HighestNumber: 4,
   IsPlaying: true
@@ -33,7 +32,6 @@ const reducer = (state = initialStates, action) => {
   let newNumbers = []
   let PositionOfNextCell
   let newScore = state.HighestNumber
-  let animations
   let prevNumbers
   let prevPrevNumbers
 
@@ -95,8 +93,7 @@ const reducer = (state = initialStates, action) => {
         Numbers: newNumbers,
         PrevNumbers: prevNumbers,
         PrevPrevNumbers: prevPrevNumbers,
-        HighestNumber: newScore,
-        Animations: animations
+        HighestNumber: newScore
       }
 
     case GOUP:
@@ -210,10 +207,14 @@ const reducer = (state = initialStates, action) => {
       }
       if (arraysAreEqual(Numbers, PrevNumbers)) {
         newNumbersAfterUndo = PrevPrevNumbers
+        if (Numbers.length === 2) {
+          newNumbersAfterUndo = state.Numbers
+          amountsOfUnDos = amountsOfUnDos + 1
+        }
       }
+
       return {
         ...state,
-        NewNumbers: newNumbersAfterUndo,
         IsPlaying: isPlaying,
         Numbers: newNumbersAfterUndo,
         AmountOfUnDos: amountsOfUnDos,

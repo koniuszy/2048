@@ -88,8 +88,7 @@ export const getPrevPrevNumbers = (
 export const getScore = (numbers, score) => {
   let newScore = score
 
-  // eslint-disable-next-line
-  numbers.map(number => {
+  numbers.forEach(number => {
     if (score < number[1]) {
       newScore = number[1]
     }
@@ -134,8 +133,7 @@ export const firstRowUp = position => {
 export const gameOver = Numbers => {
   sort(Numbers)
   let isLost = true
-  // eslint-disable-next-line
-  Numbers.map((number, index) => {
+  Numbers.forEach((number, index) => {
     if (index > 0 && index < NUMBEROFCELLS - ROW) {
       if (number[1] === Numbers[index + ROW][1]) {
         isLost = false

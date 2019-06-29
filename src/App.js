@@ -58,7 +58,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <Page>
+      <Page data-cy-page>
         <GlobalStyle />
         <Game />
       </Page>

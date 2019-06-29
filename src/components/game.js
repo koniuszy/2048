@@ -290,7 +290,9 @@ class Game extends React.Component {
           <GameTitle>4096</GameTitle>
           <BestScore>
             <Title>best merge</Title>
-            <HighestNumber>{this.props.highestNumber}</HighestNumber>
+            <HighestNumber data-cy-highest-score>
+              {this.props.highestNumber}
+            </HighestNumber>
           </BestScore>
         </TitleWrapper>
         <Swipe
@@ -322,13 +324,19 @@ class Game extends React.Component {
         </Swipe>
         <ButtonsWrapper>
           <Button
+            data-cy-button-undo
             styles={this.getButtonStyles()}
             disabled={this.disableButton()}
             onClick={() => this.props.action(UNDO)}
           >
             Undo: {this.props.undo}
           </Button>
-          <Button onClick={() => this.props.action(NEWGAME)}>New Game</Button>
+          <Button
+            data-cy-button-newgame
+            onClick={() => this.props.action(NEWGAME)}
+          >
+            New Game
+          </Button>
         </ButtonsWrapper>
         <Wrapper>
           <HowToPlay>
@@ -339,8 +347,11 @@ class Game extends React.Component {
         </Wrapper>
         <Wrapper>
           <HowToPlay>
-            NOTE: The game on <A href='https://play2048.co/'>play2048.co</A> is
-            the original version of 2048.
+            NOTE: The game on{' '}
+            <A data-cy-original href='https://play2048.co'>
+              play2048.co
+            </A>{' '}
+            is the original version of 2048.
           </HowToPlay>
         </Wrapper>
         <Wrapper>
@@ -351,8 +362,12 @@ class Game extends React.Component {
           </HowToPlay>
         </Wrapper>
         <Contact>
-          <A href='https://github.com/koniuszy'>Github</A>
-          <A href='https://koniuszy.github.io/'>My website</A>
+          <A data-cy-github href='https://github.com/koniuszy'>
+            Github
+          </A>
+          <A data-cy-koniuszy href='https://koniuszy.github.io'>
+            My website
+          </A>
         </Contact>
       </>
     )
